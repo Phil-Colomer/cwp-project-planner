@@ -765,6 +765,46 @@
             border-color: #0052CC !important;
         }
 
+        /* Comments */
+        .comment-item {
+            padding: 12px;
+            margin-bottom: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 3px solid #0052CC;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .comment-author {
+            font-weight: 600;
+            font-size: 13px;
+            color: #0052CC;
+        }
+
+        .comment-date {
+            font-size: 11px;
+            color: #6c757d;
+        }
+
+        .comment-text {
+            font-size: 14px;
+            color: #2c3e50;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+
+        .no-comments {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6c757d;
+        }
+
         @media (max-width: 768px) {
             .content {
                 padding: 20px;
@@ -1012,7 +1052,6 @@
                     <label class="form-label">Area</label>
                     <select class="form-select" id="taskArea">
                         <option value="">Select Area</option>
-                        <option value="Product">Product</option>
                         <option value="Tech">Tech</option>
                         <option value="Sales">Sales</option>
                         <option value="Cx">Cx</option>
@@ -1094,6 +1133,31 @@
                     <button type="submit" class="btn-primary btn">Download Data JSON</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- Comments Modal -->
+    <div class="modal" id="commentsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="commentsTaskName">Comments</h3>
+                <button class="close-btn" onclick="closeModal('commentsModal')">&times;</button>
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <div class="form-group">
+                    <label class="form-label">Add Comment</label>
+                    <textarea class="form-input" id="newCommentText" placeholder="Write your comment here..." style="min-height: 80px;"></textarea>
+                </div>
+                <button class="btn-primary btn" onclick="addComment()" style="width: 100%;">💬 Add Comment</button>
+            </div>
+
+            <div style="border-top: 1px solid #e0e0e0; padding-top: 20px;">
+                <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 12px; color: #6c757d;">Comment History</h4>
+                <div id="commentsHistory" style="max-height: 400px; overflow-y: auto;">
+                    <!-- Comments will be rendered here -->
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1221,6 +1285,7 @@
         let tasks = [];
         let currentDashboardFilter = 'today';
         let collapsedGroups = new Set();
+        let currentCommentTaskId = null; // For tracking which task's comments are being viewed
 
         // Initialize with sample data
         function initSampleData() {
@@ -1798,6 +1863,10 @@
                                             <button class="btn edit-btn" onclick="event.stopPropagation(); openEditTaskModal('${task.id}')" style="padding: 4px 8px; font-size: 12px;">
                                                 ✏️
                                             </button>
+                                            <button class="btn" onclick="event.stopPropagation(); openCommentsModal('${task.id}')" style="padding: 4px 8px; font-size: 12px; position: relative;">
+                                                💬
+                                                <span class="tooltip">Comments</span>
+                                            </button>
                                             <button class="btn" onclick="event.stopPropagation(); toggleTaskStatus('${task.id}')" style="padding: 4px 8px; font-size: 12px; position: relative;">
                                                 ${task.status === 'done' ? '↩️' : '✓'}
                                                 <span class="tooltip">${task.status === 'done' ? 'Mark as incomplete' : 'Mark as complete'}</span>
@@ -1978,6 +2047,10 @@
             if (modalId === 'pptxModal') {
                 document.getElementById('pptxProjectsList').innerHTML = '<div style="text-align: center; color: #6c757d; padding: 20px;">Select date range first</div>';
                 document.getElementById('pptxProjectContexts').innerHTML = '';
+            }
+            if (modalId === 'commentsModal') {
+                currentCommentTaskId = null;
+                document.getElementById('newCommentText').value = '';
             }
         }
 
@@ -2370,6 +2443,118 @@
             renderTasks();
         }
 
+        // Comments functions
+        function openCommentsModal(taskId) {
+            currentCommentTaskId = taskId;
+            const task = tasks.find(t => t.id === taskId);
+            if (!task) return;
+            
+            // Initialize comments array if it doesn't exist
+            if (!task.comments) {
+                task.comments = [];
+            }
+            
+            // Update modal title with task name
+            document.getElementById('commentsTaskName').textContent = `Comments: ${task.name}`;
+            
+            // Clear comment input
+            document.getElementById('newCommentText').value = '';
+            
+            // Render comments
+            renderComments(task.comments);
+            
+            // Open modal
+            document.getElementById('commentsModal').classList.add('active');
+        }
+
+        function renderComments(comments) {
+            const container = document.getElementById('commentsHistory');
+            
+            if (!comments || comments.length === 0) {
+                container.innerHTML = `
+                    <div class="no-comments">
+                        <div style="font-size: 40px; margin-bottom: 12px;">💬</div>
+                        <div style="font-size: 14px;">No comments yet</div>
+                        <div style="font-size: 12px; color: #adb5bd; margin-top: 4px;">Be the first to add a comment!</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Sort comments by date (newest first)
+            const sortedComments = [...comments].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            
+            container.innerHTML = sortedComments.map(comment => `
+                <div class="comment-item">
+                    <div class="comment-header">
+                        <span class="comment-author">${comment.author}</span>
+                        <span class="comment-date">${formatCommentDate(comment.timestamp)}</span>
+                    </div>
+                    <div class="comment-text">${escapeHtml(comment.text)}</div>
+                </div>
+            `).join('');
+        }
+
+        function addComment() {
+            const commentText = document.getElementById('newCommentText').value.trim();
+            
+            if (!commentText) {
+                alert('Please write a comment first');
+                return;
+            }
+            
+            const task = tasks.find(t => t.id === currentCommentTaskId);
+            if (!task) return;
+            
+            // Initialize comments array if needed
+            if (!task.comments) {
+                task.comments = [];
+            }
+            
+            // Create new comment
+            const newComment = {
+                id: 'comment-' + Date.now(),
+                text: commentText,
+                author: currentLoggedUser || 'Unknown',
+                timestamp: new Date().toISOString()
+            };
+            
+            // Add to task
+            task.comments.push(newComment);
+            
+            // Save to storage
+            saveData();
+            
+            // Clear input
+            document.getElementById('newCommentText').value = '';
+            
+            // Re-render comments
+            renderComments(task.comments);
+        }
+
+        function formatCommentDate(timestamp) {
+            const date = new Date(timestamp);
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+            const diffDays = Math.floor(diffMs / 86400000);
+            
+            if (diffMins < 1) return 'Just now';
+            if (diffMins < 60) return `${diffMins} min ago`;
+            if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+            if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+            
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) + 
+                   ' at ' + date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
         function capitalize(str) {
             return str.charAt(0).toUpperCase() + str.slice(1);
         }
@@ -2580,3 +2765,4 @@
     </script>
 </body>
 </html>
+
