@@ -162,7 +162,6 @@
             gap: 8px;
         }
 
-        /* Tooltips */
         .tooltip {
             position: absolute;
             bottom: 100%;
@@ -190,6 +189,44 @@
             transform: translateX(-50%);
             border: 5px solid transparent;
             border-top-color: #2c3e50;
+        }
+
+        /* Filters */
+        .filters {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .filter-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #6c757d;
+        }
+
+        .filter-select {
+            padding: 8px 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+            min-width: 150px;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #0052CC;
         }
 
         /* Date Filter Buttons */
@@ -226,55 +263,18 @@
             border-color: #0052CC;
         }
 
-        /* Projects Table */
-        .projects-group {
-            margin-bottom: 32px;
-        }
-
-        .group-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 0;
-            margin-bottom: 12px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .group-header:hover {
-            color: #0052CC;
-        }
-
-        .group-header .toggle {
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.2s;
-        }
-
-        .group-header .toggle.collapsed {
-            transform: rotate(-90deg);
-        }
-
-        .group-content {
-            max-height: 5000px;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-        }
-
-        .group-content.collapsed {
-            max-height: 0;
-        }
-
+        /* Status badges */
         .status-badge {
             padding: 4px 8px;
             border-radius: 4px;
             font-size: 12px;
             font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .status-badge:hover {
+            transform: scale(1.05);
         }
 
         .status-planning {
@@ -287,9 +287,45 @@
             color: #997404;
         }
 
+        .status-todo {
+            background: #e7e7e7;
+            color: #495057;
+        }
+
         .status-done {
             background: #d1e7dd;
             color: #0a3622;
+        }
+
+        /* Editable cells */
+        .editable-cell {
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.2s;
+            min-height: 36px;
+            display: flex;
+            align-items: center;
+        }
+
+        .editable-cell:hover {
+            background: #f8f9fa;
+            box-shadow: 0 0 0 2px #0052CC;
+        }
+
+        .editable-cell input,
+        .editable-cell select {
+            width: 100%;
+            padding: 6px 8px;
+            border: 2px solid #0052CC;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .editable-cell input:focus,
+        .editable-cell select:focus {
+            outline: none;
         }
 
         table {
@@ -445,7 +481,6 @@
             font-size: 11px;
         }
 
-        /* Project Selector for Timeline */
         .project-selector {
             margin-bottom: 20px;
             padding: 12px;
@@ -473,15 +508,6 @@
         .project-selector select:focus {
             outline: none;
             border-color: #0052CC;
-        }
-
-        /* Clickable project row */
-        .clickable-row {
-            cursor: pointer;
-        }
-
-        .clickable-row:hover {
-            background: #e8f2ff !important;
         }
 
         /* Modal */
@@ -637,6 +663,28 @@
             margin-bottom: 24px;
         }
 
+        .hide-completed-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .hide-completed-toggle input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .hide-completed-toggle label {
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
         /* PPTX Export Modal */
         .date-range-group {
             display: grid;
@@ -695,28 +743,6 @@
             margin-bottom: 0;
         }
 
-        .hide-completed-toggle {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 16px;
-            padding: 12px;
-            background: #f8f9fa;
-            border-radius: 8px;
-        }
-
-        .hide-completed-toggle input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
-
-        .hide-completed-toggle label {
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-        }
-
         @media (max-width: 768px) {
             .content {
                 padding: 20px;
@@ -737,11 +763,14 @@
             .date-range-group {
                 grid-template-columns: 1fr;
             }
+
+            .filters {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
-<body>
-    <div class="container">
+<body>    <div class="container">
         <div class="header">
             <h1>
                 <span class="icon">🎯</span>
@@ -809,6 +838,36 @@
                         </button>
                     </div>
                 </div>
+
+                <!-- Filters -->
+                <div class="filters">
+                    <div class="filter-group">
+                        <label class="filter-label">Status</label>
+                        <select class="filter-select" id="projectStatusFilter" onchange="renderProjects()">
+                            <option value="all">All Statuses</option>
+                            <option value="todo">To Do</option>
+                            <option value="planning">Planning</option>
+                            <option value="progress">In Progress</option>
+                            <option value="done">Done</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Owner</label>
+                        <select class="filter-select" id="projectOwnerFilter" onchange="renderProjects()">
+                            <option value="all">All Owners</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Priority</label>
+                        <select class="filter-select" id="projectPriorityFilter" onchange="renderProjects()">
+                            <option value="all">All Priorities</option>
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div id="projectsList"></div>
             </div>
 
@@ -873,6 +932,7 @@
                 <div class="form-group">
                     <label class="form-label">Status *</label>
                     <select class="form-select" id="projectStatus" required>
+                        <option value="todo">To Do</option>
                         <option value="planning">Planning</option>
                         <option value="progress">In Progress</option>
                         <option value="done">Done</option>
@@ -928,7 +988,16 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">Area</label>
-                    <input type="text" class="form-input" id="taskArea" placeholder="e.g., Area 1, Area 2">
+                    <select class="form-select" id="taskArea">
+                        <option value="">Select Area</option>
+                        <option value="Tech">Tech</option>
+                        <option value="Sales">Sales</option>
+                        <option value="Cx">Cx</option>
+                        <option value="IT">IT</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="SuperApp">SuperApp</option>
+                        <option value="Others">Others</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Status *</label>
@@ -1006,18 +1075,15 @@
         // AUTHENTICATION SYSTEM
         // ============================================================================
         
-        // USUARIOS AUTORIZADOS - Edita esta lista para agregar/quitar usuarios
         const AUTHORIZED_USERS = {
             "admin": "cwp2024",
             "keyla": "keyla.perez",
             "roger": "roger.avila",
             "gloria": "gloria.moreno"
-            // Agregar más usuarios aquí siguiendo el formato: "usuario": "contraseña"
         };
         
         let currentLoggedUser = null;
         
-        // Check if user is logged in
         function checkAuth() {
             const loggedUser = sessionStorage.getItem('cwp_logged_user');
             if (!loggedUser) {
@@ -1028,21 +1094,13 @@
             return true;
         }
         
-        // Show login screen
         function showLoginScreen() {
             const loginOverlay = document.createElement('div');
             loginOverlay.id = 'loginOverlay';
             loginOverlay.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
+                position: fixed; top: 0; left: 0; right: 0; bottom: 0;
                 background: linear-gradient(135deg, #0052CC 0%, #0065FF 100%);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                z-index: 10000;
+                display: flex; align-items: center; justify-content: center; z-index: 10000;
             `;
             
             loginOverlay.innerHTML = `
@@ -1075,33 +1133,22 @@
             document.getElementById('loginUsername').focus();
         }
         
-        // Handle login
         function handleLogin(e) {
             e.preventDefault();
-            
             const username = document.getElementById('loginUsername').value.trim();
             const password = document.getElementById('loginPassword').value;
             const errorDiv = document.getElementById('loginError');
             
             if (AUTHORIZED_USERS[username] && AUTHORIZED_USERS[username] === password) {
-                // Login successful
                 sessionStorage.setItem('cwp_logged_user', username);
                 currentLoggedUser = username;
-                
-                // Remove login overlay
                 document.getElementById('loginOverlay').remove();
-                
-                // Show user info
                 showUserInfo(username);
-                
-                // Initialize app
                 initSampleData();
                 renderDashboard();
                 loadFromFirestore();
                 setupRealtimeSync();
-                
             } else {
-                // Login failed
                 errorDiv.textContent = '❌ Usuario o contraseña incorrectos';
                 errorDiv.style.display = 'block';
                 document.getElementById('loginPassword').value = '';
@@ -1109,22 +1156,13 @@
             }
         }
         
-        // Show user info in header
         function showUserInfo(username) {
             const userDisplay = document.createElement('div');
             userDisplay.id = 'userDisplay';
             userDisplay.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: white;
-                padding: 12px 16px;
-                border-radius: 8px;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                z-index: 1000;
+                position: fixed; top: 20px; right: 20px; background: white; padding: 12px 16px;
+                border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                display: flex; align-items: center; gap: 12px; z-index: 1000;
             `;
             
             userDisplay.innerHTML = `
@@ -1135,21 +1173,12 @@
                     <div style="font-size: 14px; font-weight: 600; color: #2c3e50;">${username}</div>
                     <div style="font-size: 12px; color: #6c757d;">Sesión activa</div>
                 </div>
-                <button onclick="handleLogout()" style="
-                    padding: 6px 12px;
-                    background: #f8f9fa;
-                    border: 1px solid #dee2e6;
-                    border-radius: 6px;
-                    font-size: 12px;
-                    cursor: pointer;
-                    color: #6c757d;
-                ">Salir</button>
+                <button onclick="handleLogout()" style="padding: 6px 12px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 6px; font-size: 12px; cursor: pointer; color: #6c757d;">Salir</button>
             `;
             
             document.body.appendChild(userDisplay);
         }
         
-        // Handle logout
         function handleLogout() {
             if (confirm('¿Estás seguro que deseas cerrar sesión?')) {
                 sessionStorage.removeItem('cwp_logged_user');
@@ -1158,10 +1187,9 @@
         }
         
         // ============================================================================
-        // APP CODE (ORIGINAL)
+        // DATA STRUCTURE
         // ============================================================================
         
-        // Data structure
         let projects = [];
         let tasks = [];
         let currentDashboardFilter = 'today';
@@ -1210,7 +1238,7 @@
                         id: 'task-1',
                         projectId: 'proj-1',
                         name: 'Develop a survey to gather direct feedback from customers',
-                        area: 'Area 1',
+                        area: 'Tech',
                         status: 'done',
                         assignee: 'Sohrab Amin',
                         dueDate: '2023-12-25',
@@ -1220,7 +1248,7 @@
                         id: 'task-2',
                         projectId: 'proj-1',
                         name: 'Analyze current customer engagement metrics',
-                        area: 'Area 1',
+                        area: 'Sales',
                         status: 'progress',
                         assignee: 'Sam Catania',
                         dueDate: '2023-12-19',
@@ -1230,7 +1258,7 @@
                         id: 'task-3',
                         projectId: 'proj-3',
                         name: 'Market research and competitive analysis',
-                        area: 'Area 2',
+                        area: 'Marketing',
                         status: 'done',
                         assignee: 'Andrea Lim',
                         dueDate: '2023-12-05',
@@ -1240,7 +1268,7 @@
                         id: 'task-4',
                         projectId: 'proj-3',
                         name: 'Develop go-to-market strategy',
-                        area: 'Area 2',
+                        area: 'Sales',
                         status: 'progress',
                         assignee: 'Andrea Lim',
                         dueDate: '2023-12-08',
@@ -1254,7 +1282,6 @@
             }
         }
 
-        // Save/Load data
         function saveData() {
             localStorage.setItem('projects', JSON.stringify(projects));
             localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -1265,22 +1292,171 @@
             tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
         }
 
-        // Date filter function
+        // ============================================================================
+        // INLINE EDITING FUNCTIONS
+        // ============================================================================
+
+        function makeEditable(element, projectId, field, options = null) {
+            element.onclick = (e) => {
+                e.stopPropagation();
+                const currentValue = element.textContent.trim();
+                
+                if (options) {
+                    // Dropdown
+                    const select = document.createElement('select');
+                    select.style.cssText = 'width: 100%; padding: 6px 8px; border: 2px solid #0052CC; border-radius: 4px; font-size: 14px;';
+                    
+                    options.forEach(opt => {
+                        const option = document.createElement('option');
+                        option.value = opt.value;
+                        option.textContent = opt.label;
+                        if (opt.value === currentValue || opt.label === currentValue) {
+                            option.selected = true;
+                        }
+                        select.appendChild(option);
+                    });
+                    
+                    select.onchange = () => {
+                        updateProjectField(projectId, field, select.value);
+                        select.replaceWith(element);
+                    };
+                    
+                    select.onblur = () => {
+                        select.replaceWith(element);
+                    };
+                    
+                    element.replaceWith(select);
+                    select.focus();
+                } else {
+                    // Text input
+                    const input = document.createElement('input');
+                    input.type = field.includes('Date') ? 'date' : 'text';
+                    input.value = field.includes('Date') ? currentValue.split(' ')[0] : currentValue;
+                    input.style.cssText = 'width: 100%; padding: 6px 8px; border: 2px solid #0052CC; border-radius: 4px; font-size: 14px;';
+                    
+                    input.onblur = () => {
+                        if (input.value.trim() !== currentValue) {
+                            updateProjectField(projectId, field, input.value.trim());
+                        }
+                        input.replaceWith(element);
+                    };
+                    
+                    input.onkeydown = (e) => {
+                        if (e.key === 'Enter') {
+                            input.blur();
+                        } else if (e.key === 'Escape') {
+                            input.replaceWith(element);
+                        }
+                    };
+                    
+                    element.replaceWith(input);
+                    input.focus();
+                    input.select();
+                }
+            };
+        }
+
+        function makeTaskEditable(element, taskId, field, options = null) {
+            element.onclick = (e) => {
+                e.stopPropagation();
+                const currentValue = element.textContent.trim();
+                
+                if (options) {
+                    const select = document.createElement('select');
+                    select.style.cssText = 'width: 100%; padding: 6px 8px; border: 2px solid #0052CC; border-radius: 4px; font-size: 14px;';
+                    
+                    options.forEach(opt => {
+                        const option = document.createElement('option');
+                        option.value = opt.value;
+                        option.textContent = opt.label;
+                        if (opt.value === currentValue || opt.label === currentValue) {
+                            option.selected = true;
+                        }
+                        select.appendChild(option);
+                    });
+                    
+                    select.onchange = () => {
+                        updateTaskField(taskId, field, select.value);
+                        select.replaceWith(element);
+                    };
+                    
+                    select.onblur = () => {
+                        select.replaceWith(element);
+                    };
+                    
+                    element.replaceWith(select);
+                    select.focus();
+                } else {
+                    const input = document.createElement('input');
+                    input.type = field.includes('Date') ? 'date' : 'text';
+                    input.value = field.includes('Date') ? currentValue : currentValue;
+                    input.style.cssText = 'width: 100%; padding: 6px 8px; border: 2px solid #0052CC; border-radius: 4px; font-size: 14px;';
+                    
+                    input.onblur = () => {
+                        if (input.value.trim() !== currentValue) {
+                            updateTaskField(taskId, field, input.value.trim());
+                        }
+                        input.replaceWith(element);
+                    };
+                    
+                    input.onkeydown = (e) => {
+                        if (e.key === 'Enter') {
+                            input.blur();
+                        } else if (e.key === 'Escape') {
+                            input.replaceWith(element);
+                        }
+                    };
+                    
+                    element.replaceWith(input);
+                    input.focus();
+                    input.select();
+                }
+            };
+        }
+
+        function updateProjectField(projectId, field, value) {
+            const project = projects.find(p => p.id === projectId);
+            if (project) {
+                project[field] = value;
+                saveData();
+                renderProjects();
+            }
+        }
+
+        function updateTaskField(taskId, field, value) {
+            const task = tasks.find(t => t.id === taskId);
+            if (task) {
+                task[field] = value;
+                saveData();
+                renderTasks();
+            }
+        }
+
+        // Get unique owners for filter
+        function getUniqueOwners() {
+            return [...new Set(projects.map(p => p.owner))].sort();
+        }
+
+        // Get unique assignees for filter
+        function getUniqueAssignees() {
+            return [...new Set(tasks.map(t => t.assignee))].sort();
+        }
+
+        // ============================================================================
+        // RENDER FUNCTIONS
+        // ============================================================================
+
         function filterDashboard(filter) {
             currentDashboardFilter = filter;
-            
-            // Update button states
             document.querySelectorAll('.date-filter-btn').forEach(btn => {
                 btn.classList.remove('active');
                 if (btn.dataset.filter === filter) {
                     btn.classList.add('active');
                 }
             });
-            
             renderDashboard();
         }
 
-        // Get filtered data based on date range
         function getFilteredData() {
             const today = new Date();
             today.setHours(0, 0, 0, 0);
@@ -1318,57 +1494,6 @@
             return { projects, tasks };
         }
 
-        // Tab switching
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                const viewName = tab.dataset.view;
-                
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-                
-                tab.classList.add('active');
-                document.getElementById(viewName).classList.add('active');
-                
-                renderView(viewName);
-            });
-        });
-
-        // Render views
-        function renderView(viewName) {
-            switch(viewName) {
-                case 'dashboard':
-                    renderDashboard();
-                    break;
-                case 'projects':
-                    renderProjects();
-                    break;
-                case 'tasks':
-                    renderTasks();
-                    break;
-                case 'timeline':
-                    renderTimeline();
-                    break;
-            }
-        }
-
-        // Toggle group collapse
-        function toggleGroup(groupId) {
-            if (collapsedGroups.has(groupId)) {
-                collapsedGroups.delete(groupId);
-            } else {
-                collapsedGroups.add(groupId);
-            }
-            
-            const toggle = document.querySelector(`[data-group="${groupId}"] .toggle`);
-            const content = document.getElementById(`content-${groupId}`);
-            
-            if (toggle && content) {
-                toggle.classList.toggle('collapsed');
-                content.classList.toggle('collapsed');
-            }
-        }
-
-        // Dashboard
         function renderDashboard() {
             const { projects: filteredProjects, tasks: filteredTasks } = getFilteredData();
             
@@ -1410,7 +1535,7 @@
                                 const progress = projectTasks.length > 0 ? Math.round((completedTasks / projectTasks.length) * 100) : 0;
                                 
                                 return `
-                                    <tr class="clickable-row" onclick="viewProjectTasks('${project.id}')">
+                                    <tr>
                                         <td><strong>${project.name}</strong></td>
                                         <td><span class="status-badge status-${project.status}">${formatStatus(project.status)}</span></td>
                                         <td>${project.owner}</td>
@@ -1432,100 +1557,133 @@
             }
         }
 
-        // Projects
         function renderProjects() {
+            // Update owner filter options
+            const ownerFilter = document.getElementById('projectOwnerFilter');
+            const currentOwnerFilter = ownerFilter.value;
+            const owners = getUniqueOwners();
+            
+            ownerFilter.innerHTML = '<option value="all">All Owners</option>' +
+                owners.map(owner => `<option value="${owner}">${owner}</option>`).join('');
+            ownerFilter.value = currentOwnerFilter;
+            
+            // Get filter values
+            const statusFilter = document.getElementById('projectStatusFilter').value;
+            const priorityFilter = document.getElementById('projectPriorityFilter').value;
+            
+            // Apply filters
+            let filteredProjects = projects;
+            
+            if (statusFilter !== 'all') {
+                filteredProjects = filteredProjects.filter(p => p.status === statusFilter);
+            }
+            
+            if (currentOwnerFilter !== 'all') {
+                filteredProjects = filteredProjects.filter(p => p.owner === currentOwnerFilter);
+            }
+            
+            if (priorityFilter !== 'all') {
+                filteredProjects = filteredProjects.filter(p => p.priority === priorityFilter);
+            }
+            
             const container = document.getElementById('projectsList');
             
-            if (projects.length === 0) {
+            if (filteredProjects.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
                         <div class="empty-state-icon">📋</div>
-                        <div class="empty-state-text">No projects yet</div>
-                        <div class="empty-state-subtext">Create your first project to get started</div>
+                        <div class="empty-state-text">No projects match the filters</div>
+                        <div class="empty-state-subtext">Try adjusting your filters or create a new project</div>
                         <button class="btn-primary btn" onclick="openProjectModal()">+ New Project</button>
                     </div>
                 `;
                 return;
             }
 
-            const groupedProjects = {
-                planning: projects.filter(p => p.status === 'planning'),
-                progress: projects.filter(p => p.status === 'progress'),
-                done: projects.filter(p => p.status === 'done')
-            };
+            // Status options for dropdown
+            const statusOptions = [
+                {value: 'todo', label: 'To Do'},
+                {value: 'planning', label: 'Planning'},
+                {value: 'progress', label: 'In Progress'},
+                {value: 'done', label: 'Done'}
+            ];
 
-            container.innerHTML = Object.entries(groupedProjects)
-                .filter(([_, items]) => items.length > 0)
-                .map(([status, items]) => {
-                    const groupId = `projects-${status}`;
-                    const isCollapsed = collapsedGroups.has(groupId);
-                    
-                    return `
-                        <div class="projects-group">
-                            <div class="group-header" data-group="${groupId}" onclick="toggleGroup('${groupId}')">
-                                <span class="toggle ${isCollapsed ? 'collapsed' : ''}">▼</span>
-                                <span class="status-badge status-${status}">${formatStatus(status)}</span>
-                                <span style="color: #6c757d;">${items.length}</span>
-                            </div>
-                            <div class="group-content ${isCollapsed ? 'collapsed' : ''}" id="content-${groupId}">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Project name</th>
-                                            <th>Status</th>
-                                            <th>Owner</th>
-                                            <th>Dates</th>
-                                            <th>Priority</th>
-                                            <th>Completion</th>
-                                            <th>Blocked By</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        ${items.map(project => {
-                                            const projectTasks = tasks.filter(t => t.projectId === project.id);
-                                            const completedTasks = projectTasks.filter(t => t.status === 'done').length;
-                                            const progress = projectTasks.length > 0 ? Math.round((completedTasks / projectTasks.length) * 100) : 0;
-                                            
-                                            return `
-                                                <tr class="clickable-row" onclick="viewProjectTasks('${project.id}')">
-                                                    <td><strong>${project.name}</strong></td>
-                                                    <td><span class="status-badge status-${project.status}">${formatStatus(project.status)}</span></td>
-                                                    <td>${project.owner}</td>
-                                                    <td style="font-size: 12px;">${formatDate(project.startDate)} → ${formatDate(project.endDate)}</td>
-                                                    <td><span class="priority-badge priority-${project.priority}">${capitalize(project.priority)}</span></td>
-                                                    <td>
-                                                        <div style="display: flex; align-items: center; gap: 8px;">
-                                                            <span style="font-size: 12px;">${progress}%</span>
-                                                            <div class="progress-bar" style="width: 60px;">
-                                                                <div class="progress-fill" style="width: ${progress}%"></div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td style="font-size: 12px; color: #6c757d;">${project.blockedBy || '-'}</td>
-                                                    <td>
-                                                        <button class="btn" onclick="event.stopPropagation(); deleteProject('${project.id}')" style="padding: 4px 8px; font-size: 12px; position: relative;">
-                                                            🗑️
-                                                            <span class="tooltip">Delete project</span>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            `;
-                                        }).join('')}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
+            const priorityOptions = [
+                {value: 'low', label: 'Low'},
+                {value: 'medium', label: 'Medium'},
+                {value: 'high', label: 'High'}
+            ];
+
+            container.innerHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Project name</th>
+                            <th>Status</th>
+                            <th>Owner</th>
+                            <th>Dates</th>
+                            <th>Priority</th>
+                            <th>Completion</th>
+                            <th>Blocked By</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${filteredProjects.map(project => {
+                            const projectTasks = tasks.filter(t => t.projectId === project.id);
+                            const completedTasks = projectTasks.filter(t => t.status === 'done').length;
+                            const progress = projectTasks.length > 0 ? Math.round((completedTasks / projectTasks.length) * 100) : 0;
+                            
+                            return `
+                                <tr>
+                                    <td><div class="editable-cell" data-project="${project.id}" data-field="name"><strong>${project.name}</strong></div></td>
+                                    <td><div class="editable-cell" data-project="${project.id}" data-field="status"><span class="status-badge status-${project.status}">${formatStatus(project.status)}</span></div></td>
+                                    <td><div class="editable-cell" data-project="${project.id}" data-field="owner">${project.owner}</div></td>
+                                    <td>
+                                        <div class="editable-cell" data-project="${project.id}" data-field="startDate" style="font-size: 11px;">${formatDate(project.startDate)}</div>
+                                        <div class="editable-cell" data-project="${project.id}" data-field="endDate" style="font-size: 11px;">${formatDate(project.endDate)}</div>
+                                    </td>
+                                    <td><div class="editable-cell" data-project="${project.id}" data-field="priority"><span class="priority-badge priority-${project.priority}">${capitalize(project.priority)}</span></div></td>
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <span style="font-size: 12px;">${progress}%</span>
+                                            <div class="progress-bar" style="width: 60px;">
+                                                <div class="progress-fill" style="width: ${progress}%"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><div class="editable-cell" data-project="${project.id}" data-field="blockedBy" style="font-size: 12px; color: #6c757d;">${project.blockedBy || '-'}</div></td>
+                                    <td>
+                                        <button class="btn" onclick="deleteProject('${project.id}')" style="padding: 4px 8px; font-size: 12px; position: relative;">
+                                            🗑️
+                                            <span class="tooltip">Delete project</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            `;
+
+            // Make cells editable
+            document.querySelectorAll('.editable-cell').forEach(cell => {
+                const projectId = cell.dataset.project;
+                const field = cell.dataset.field;
+                
+                if (field === 'status') {
+                    makeEditable(cell, projectId, field, statusOptions);
+                } else if (field === 'priority') {
+                    makeEditable(cell, projectId, field, priorityOptions);
+                } else if (field === 'owner') {
+                    const ownerOptions = getUniqueOwners().map(o => ({value: o, label: o}));
+                    makeEditable(cell, projectId, field, ownerOptions.length > 0 ? ownerOptions : null);
+                } else {
+                    makeEditable(cell, projectId, field);
+                }
+            });
         }
 
-        // View project tasks - navigate to tasks view
-        function viewProjectTasks(projectId) {
-            document.querySelector('[data-view="tasks"]').click();
-        }
-
-        // Tasks
         function renderTasks() {
             const container = document.getElementById('tasksList');
             const hideCompleted = document.getElementById('hideCompletedCheckbox').checked;
@@ -1552,68 +1710,100 @@
                 tasks: filteredTasks.filter(t => t.projectId === project.id)
             })).filter(group => group.tasks.length > 0);
 
+            const statusOptions = [
+                {value: 'todo', label: 'To Do'},
+                {value: 'progress', label: 'In Progress'},
+                {value: 'done', label: 'Done'}
+            ];
+
+            const areaOptions = [
+                {value: '', label: '-'},
+                {value: 'Tech', label: 'Tech'},
+                {value: 'Sales', label: 'Sales'},
+                {value: 'Cx', label: 'Cx'},
+                {value: 'IT', label: 'IT'},
+                {value: 'Marketing', label: 'Marketing'},
+                {value: 'SuperApp', label: 'SuperApp'},
+                {value: 'Others', label: 'Others'}
+            ];
+
+            const priorityOptions = [
+                {value: 'low', label: 'Low'},
+                {value: 'medium', label: 'Medium'},
+                {value: 'high', label: 'High'}
+            ];
+
             container.innerHTML = groupedByProject.map(({ project, tasks: projectTasks }) => {
-                const groupId = `tasks-${project.id}`;
-                const isCollapsed = collapsedGroups.has(groupId);
                 const completedTasks = projectTasks.filter(t => t.status === 'done').length;
                 
                 return `
-                    <div class="projects-group">
-                        <div class="group-header" data-group="${groupId}" onclick="toggleGroup('${groupId}')">
-                            <span class="toggle ${isCollapsed ? 'collapsed' : ''}">▼</span>
-                            <span style="color: #2c3e50;">${project.name}</span>
-                            <span style="color: #6c757d; font-size: 12px; font-weight: normal;">
-                                ${completedTasks}/${projectTasks.length} completed
-                            </span>
+                    <div style="margin-bottom: 32px;">
+                        <div style="font-weight: 600; font-size: 16px; padding: 12px; margin-bottom: 8px; color: #2c3e50; background: #f8f9fa; border-radius: 8px;">
+                            ${project.name} <span style="color: #6c757d; font-size: 12px; font-weight: normal;">(${completedTasks}/${projectTasks.length} completed)</span>
                         </div>
-                        <div class="group-content ${isCollapsed ? 'collapsed' : ''}" id="content-${groupId}">
-                            <table>
-                                <thead>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Task name</th>
+                                    <th>Area</th>
+                                    <th>Status</th>
+                                    <th>Assignee</th>
+                                    <th>Due</th>
+                                    <th>Priority</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${projectTasks.map(task => `
                                     <tr>
-                                        <th>Task name</th>
-                                        <th>Area</th>
-                                        <th>Status</th>
-                                        <th>Assignee</th>
-                                        <th>Due</th>
-                                        <th>Priority</th>
-                                        <th>Actions</th>
+                                        <td><div class="editable-cell" data-task="${task.id}" data-field="name">${task.name}</div></td>
+                                        <td><div class="editable-cell" data-task="${task.id}" data-field="area" style="font-size: 12px; color: #6c757d;">${task.area || '-'}</div></td>
+                                        <td><div class="editable-cell" data-task="${task.id}" data-field="status"><span class="status-badge status-${task.status === 'todo' ? 'todo' : task.status === 'progress' ? 'progress' : 'done'}">${formatTaskStatus(task.status)}</span></div></td>
+                                        <td><div class="editable-cell" data-task="${task.id}" data-field="assignee">${task.assignee}</div></td>
+                                        <td><div class="editable-cell" data-task="${task.id}" data-field="dueDate" style="font-size: 12px;">${formatDate(task.dueDate)}</div></td>
+                                        <td><div class="editable-cell" data-task="${task.id}" data-field="priority"><span class="priority-badge priority-${task.priority}">${capitalize(task.priority)}</span></div></td>
+                                        <td>
+                                            <button class="btn" onclick="toggleTaskStatus('${task.id}')" style="padding: 4px 8px; font-size: 12px; position: relative;">
+                                                ${task.status === 'done' ? '↩️' : '✓'}
+                                                <span class="tooltip">${task.status === 'done' ? 'Mark as incomplete' : 'Mark as complete'}</span>
+                                            </button>
+                                            <button class="btn" onclick="deleteTask('${task.id}')" style="padding: 4px 8px; font-size: 12px; position: relative;">
+                                                🗑️
+                                                <span class="tooltip">Delete task</span>
+                                            </button>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    ${projectTasks.map(task => `
-                                        <tr>
-                                            <td>${task.name}</td>
-                                            <td style="font-size: 12px; color: #6c757d;">${task.area || '-'}</td>
-                                            <td><span class="status-badge status-${task.status === 'todo' ? 'planning' : task.status === 'progress' ? 'progress' : 'done'}">${formatTaskStatus(task.status)}</span></td>
-                                            <td>${task.assignee}</td>
-                                            <td style="font-size: 12px;">${formatDate(task.dueDate)}</td>
-                                            <td><span class="priority-badge priority-${task.priority}">${capitalize(task.priority)}</span></td>
-                                            <td>
-                                                <button class="btn" onclick="toggleTaskStatus('${task.id}')" style="padding: 4px 8px; font-size: 12px; position: relative;">
-                                                    ${task.status === 'done' ? '↩️' : '✓'}
-                                                    <span class="tooltip">${task.status === 'done' ? 'Mark as incomplete' : 'Mark as complete'}</span>
-                                                </button>
-                                                <button class="btn" onclick="deleteTask('${task.id}')" style="padding: 4px 8px; font-size: 12px; position: relative;">
-                                                    🗑️
-                                                    <span class="tooltip">Delete task</span>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    `).join('')}
-                                </tbody>
-                            </table>
-                        </div>
+                                `).join('')}
+                            </tbody>
+                        </table>
                     </div>
                 `;
             }).join('');
+
+            // Make cells editable
+            document.querySelectorAll('.editable-cell[data-task]').forEach(cell => {
+                const taskId = cell.dataset.task;
+                const field = cell.dataset.field;
+                
+                if (field === 'status') {
+                    makeTaskEditable(cell, taskId, field, statusOptions);
+                } else if (field === 'area') {
+                    makeTaskEditable(cell, taskId, field, areaOptions);
+                } else if (field === 'priority') {
+                    makeTaskEditable(cell, taskId, field, priorityOptions);
+                } else if (field === 'assignee') {
+                    const assigneeOptions = getUniqueAssignees().map(a => ({value: a, label: a}));
+                    makeTaskEditable(cell, taskId, field, assigneeOptions.length > 0 ? assigneeOptions : null);
+                } else {
+                    makeTaskEditable(cell, taskId, field);
+                }
+            });
         }
 
-        // Timeline/Gantt
         function renderTimeline() {
             const container = document.getElementById('ganttChart');
             const filterSelect = document.getElementById('timelineProjectFilter');
             
-            // Update project filter dropdown
             if (filterSelect.options.length === 1) {
                 projects.forEach(project => {
                     const option = document.createElement('option');
@@ -1624,94 +1814,57 @@
             }
             
             const selectedProjectId = filterSelect.value;
-            
-            // Filter projects and tasks
             let displayProjects = selectedProjectId === 'all' ? projects : projects.filter(p => p.id === selectedProjectId);
             
             if (displayProjects.length === 0 || tasks.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">📅</div>
-                        <div class="empty-state-text">No tasks to display</div>
-                        <div class="empty-state-subtext">Create tasks to see the timeline</div>
-                    </div>
-                `;
+                container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📅</div><div class="empty-state-text">No tasks to display</div></div>`;
                 return;
             }
 
-            // Get all tasks for selected projects
             let allTasks = [];
             displayProjects.forEach(project => {
                 const projectTasks = tasks.filter(t => t.projectId === project.id);
                 projectTasks.forEach(task => {
-                    allTasks.push({
-                        ...task,
-                        projectName: project.name,
-                        projectStatus: project.status
-                    });
+                    allTasks.push({...task, projectName: project.name, projectStatus: project.status});
                 });
             });
 
             if (allTasks.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">📅</div>
-                        <div class="empty-state-text">No tasks for selected project(s)</div>
-                        <div class="empty-state-subtext">Add tasks to see them in the timeline</div>
-                    </div>
-                `;
+                container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📅</div><div class="empty-state-text">No tasks for selected project(s)</div></div>`;
                 return;
             }
 
-            // Calculate date range
             const allDates = allTasks.map(t => new Date(t.dueDate));
             const minDate = new Date(Math.min(...allDates));
             const maxDate = new Date(Math.max(...allDates));
             
-            // Extend range a bit for better visualization
             minDate.setDate(minDate.getDate() - 7);
             maxDate.setDate(maxDate.getDate() + 7);
             
-            // Generate months
             const months = [];
             let currentDate = new Date(minDate.getFullYear(), minDate.getMonth(), 1);
             while (currentDate <= maxDate) {
-                months.push({
-                    label: currentDate.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
-                    date: new Date(currentDate)
-                });
+                months.push({label: currentDate.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }), date: new Date(currentDate)});
                 currentDate.setMonth(currentDate.getMonth() + 1);
             }
 
             const totalDays = Math.ceil((maxDate - minDate) / (1000 * 60 * 60 * 24));
-
-            // Group tasks by project for display
-            const projectGroups = displayProjects.map(project => ({
-                project,
-                tasks: allTasks.filter(t => t.projectId === project.id)
-            }));
+            const projectGroups = displayProjects.map(project => ({project, tasks: allTasks.filter(t => t.projectId === project.id)}));
 
             container.innerHTML = `
-                <div class="timeline-header">
-                    ${months.map(month => `<div class="timeline-month">${month.label}</div>`).join('')}
-                </div>
+                <div class="timeline-header">${months.map(month => `<div class="timeline-month">${month.label}</div>`).join('')}</div>
                 ${projectGroups.map(({ project, tasks: projectTasks }) => `
                     <div style="margin-bottom: 32px;">
-                        <div style="font-weight: 600; font-size: 14px; padding: 8px 0; margin-bottom: 8px; color: #0052CC;">
-                            ${project.name} (${projectTasks.length} tasks)
-                        </div>
+                        <div style="font-weight: 600; font-size: 14px; padding: 8px 0; margin-bottom: 8px; color: #0052CC;">${project.name} (${projectTasks.length} tasks)</div>
                         ${projectTasks.map(task => {
                             const dueDate = new Date(task.dueDate);
-                            // Assume tasks start 7 days before due date for visualization
                             const startDate = new Date(dueDate);
                             startDate.setDate(dueDate.getDate() - 7);
                             
-                            const duration = 7; // Default 7 day duration for tasks
+                            const duration = 7;
                             const offset = Math.ceil((startDate - minDate) / (1000 * 60 * 60 * 24));
-                            
                             const leftPercent = (offset / totalDays) * 100;
                             const widthPercent = (duration / totalDays) * 100;
-                            
                             const statusClass = task.status === 'done' ? 'done' : task.status === 'progress' ? 'progress' : 'planning';
                             
                             return `
@@ -1731,6 +1884,27 @@
             `;
         }
 
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const viewName = tab.dataset.view;
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById(viewName).classList.add('active');
+                renderView(viewName);
+            });
+        });
+
+        function renderView(viewName) {
+            switch(viewName) {
+                case 'dashboard': renderDashboard(); break;
+                case 'projects': renderProjects(); break;
+                case 'tasks': renderTasks(); break;
+                case 'timeline': renderTimeline(); break;
+            }
+        }
+
         // Modal functions
         function openProjectModal() {
             document.getElementById('projectModal').classList.add('active');
@@ -1739,12 +1913,10 @@
         function openTaskModal() {
             const select = document.getElementById('taskProject');
             select.innerHTML = projects.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
-            
             if (projects.length === 0) {
                 alert('Please create a project first');
                 return;
             }
-            
             document.getElementById('taskModal').classList.add('active');
         }
 
@@ -1764,17 +1936,13 @@
             }
         }
 
-        // Filter projects for PPTX export based on date range
         function filterProjectsForPPTX() {
             const dateFrom = document.getElementById('pptxDateFrom').value;
             const dateTo = document.getElementById('pptxDateTo').value;
-            
             if (!dateFrom || !dateTo) return;
             
             const fromDate = new Date(dateFrom);
             const toDate = new Date(dateTo);
-            
-            // Filter projects that have tasks within the date range
             const relevantProjects = projects.filter(project => {
                 const projectTasks = tasks.filter(t => t.projectId === project.id);
                 return projectTasks.some(task => {
@@ -1784,7 +1952,6 @@
             });
             
             const container = document.getElementById('pptxProjectsList');
-            
             if (relevantProjects.length === 0) {
                 container.innerHTML = '<div style="text-align: center; color: #6c757d; padding: 20px;">No projects with tasks in this date range</div>';
                 document.getElementById('pptxProjectContexts').innerHTML = '';
@@ -1799,16 +1966,11 @@
             `).join('');
         }
 
-        // Update context forms when projects are selected
         function updatePPTXContextForms() {
             const selectedProjects = Array.from(document.querySelectorAll('#pptxProjectsList input[type="checkbox"]:checked'))
-                .map(cb => {
-                    const projectId = cb.value;
-                    return projects.find(p => p.id === projectId);
-                }).filter(Boolean);
+                .map(cb => projects.find(p => p.id === cb.value)).filter(Boolean);
             
             const container = document.getElementById('pptxProjectContexts');
-            
             if (selectedProjects.length === 0) {
                 container.innerHTML = '';
                 return;
@@ -1819,20 +1981,18 @@
                     <h4>${project.name}</h4>
                     <div class="context-group">
                         <label class="form-label" style="font-size: 13px;">Topics or tasks to highlight (for Executive Summary)</label>
-                        <textarea class="form-input" id="pptx-highlights-${project.id}" placeholder="e.g., Completed user research, Launched beta version, Exceeded target by 15%"></textarea>
+                        <textarea class="form-input" id="pptx-highlights-${project.id}" placeholder="e.g., Completed user research, Launched beta version"></textarea>
                     </div>
                     <div class="context-group">
                         <label class="form-label" style="font-size: 13px;">Risks or support needs (for Support Requirements)</label>
-                        <textarea class="form-input" id="pptx-risks-${project.id}" placeholder="e.g., Need additional resources for Q1, Dependency on X team, Budget constraints"></textarea>
+                        <textarea class="form-input" id="pptx-risks-${project.id}" placeholder="e.g., Need additional resources for Q1"></textarea>
                     </div>
                 </div>
             `).join('');
         }
 
-        // Save functions
         function saveProject(e) {
             e.preventDefault();
-            
             const project = {
                 id: 'proj-' + Date.now(),
                 name: document.getElementById('projectName').value,
@@ -1843,20 +2003,15 @@
                 priority: document.getElementById('projectPriority').value,
                 blockedBy: document.getElementById('projectBlockedBy').value
             };
-            
             projects.push(project);
             saveData();
             closeModal('projectModal');
             e.target.reset();
-            renderView('projects');
-            
-            // Switch to projects view
             document.querySelector('[data-view="projects"]').click();
         }
 
         function saveTask(e) {
             e.preventDefault();
-            
             const task = {
                 id: 'task-' + Date.now(),
                 projectId: document.getElementById('taskProject').value,
@@ -1867,18 +2022,13 @@
                 dueDate: document.getElementById('taskDueDate').value,
                 priority: document.getElementById('taskPriority').value
             };
-            
             tasks.push(task);
             saveData();
             closeModal('taskModal');
             e.target.reset();
-            renderView('tasks');
-            
-            // Switch to tasks view
             document.querySelector('[data-view="tasks"]').click();
         }
 
-        // Delete functions
         function deleteProject(id) {
             if (confirm('Are you sure you want to delete this project? All associated tasks will also be deleted.')) {
                 projects = projects.filter(p => p.id !== id);
@@ -1899,18 +2049,13 @@
         function toggleTaskStatus(id) {
             const task = tasks.find(t => t.id === id);
             if (task) {
-                if (task.status === 'done') {
-                    task.status = 'progress';
-                } else {
-                    task.status = 'done';
-                }
+                task.status = task.status === 'done' ? 'progress' : 'done';
                 saveData();
                 renderView('tasks');
-                renderDashboard(); // Update dashboard stats
+                renderDashboard();
             }
         }
 
-        // Export functions
         function exportProjectStatus() {
             const data = projects.map(project => {
                 const projectTasks = tasks.filter(t => t.projectId === project.id);
@@ -1927,7 +2072,6 @@
                     'Progress (%)': progress,
                     'Tasks Completed': `${completedTasks}/${projectTasks.length}`,
                     'Blocked By': project.blockedBy || '-',
-                    '--- Tasks ---': '',
                     ...projectTasks.reduce((acc, task, idx) => {
                         acc[`Task ${idx + 1}`] = task.name;
                         acc[`Task ${idx + 1} Area`] = task.area || '-';
@@ -1943,18 +2087,13 @@
             const ws = XLSX.utils.json_to_sheet(data);
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, 'Project Status');
-            
             const today = new Date().toISOString().split('T')[0].replace(/-/g, '');
             XLSX.writeFile(wb, `${today}_Projects_Status.xlsx`);
         }
 
         function exportGanttImage() {
             const ganttElement = document.getElementById('ganttChart');
-            
-            html2canvas(ganttElement, {
-                backgroundColor: '#ffffff',
-                scale: 2
-            }).then(canvas => {
+            html2canvas(ganttElement, {backgroundColor: '#ffffff', scale: 2}).then(canvas => {
                 const link = document.createElement('a');
                 const today = new Date().toISOString().split('T')[0].replace(/-/g, '');
                 link.download = `${today}_Gantt_Chart.png`;
@@ -1967,7 +2106,6 @@
             const data = projects.map(project => {
                 const projectTasks = tasks.filter(t => t.projectId === project.id);
                 const duration = Math.ceil((new Date(project.endDate) - new Date(project.startDate)) / (1000 * 60 * 60 * 24));
-                
                 return {
                     'Project Name': project.name,
                     'Status': formatStatus(project.status),
@@ -1985,49 +2123,35 @@
             const ws = XLSX.utils.json_to_sheet(data);
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, 'Timeline Data');
-            
             const today = new Date().toISOString().split('T')[0].replace(/-/g, '');
             XLSX.writeFile(wb, `${today}_Gantt_Data.xlsx`);
         }
 
-        // Generate PPTX - Export JSON for Python script
         async function generatePPTX(e) {
             e.preventDefault();
-            
             const dateFrom = document.getElementById('pptxDateFrom').value;
             const dateTo = document.getElementById('pptxDateTo').value;
-            
-            const selectedProjectIds = Array.from(document.querySelectorAll('#pptxProjectsList input[type="checkbox"]:checked'))
-                .map(cb => cb.value);
+            const selectedProjectIds = Array.from(document.querySelectorAll('#pptxProjectsList input[type="checkbox"]:checked')).map(cb => cb.value);
             
             if (selectedProjectIds.length === 0) {
                 alert('Please select at least one project');
                 return;
             }
             
-            // Collect context for each project
             const projectContexts = selectedProjectIds.map(projectId => {
                 const project = projects.find(p => p.id === projectId);
                 const highlights = document.getElementById(`pptx-highlights-${projectId}`)?.value || '';
                 const risks = document.getElementById(`pptx-risks-${projectId}`)?.value || '';
                 const projectTasks = tasks.filter(t => t.projectId === projectId);
-                
-                return {
-                    project,
-                    highlights,
-                    risks,
-                    tasks: projectTasks
-                };
+                return {project, highlights, risks, tasks: projectTasks};
             });
             
-            // Create export data
             const exportData = {
                 dateRange: { from: dateFrom, to: dateTo },
                 projects: projectContexts,
                 exportedAt: new Date().toISOString()
             };
             
-            // Download JSON file
             const dataStr = JSON.stringify(exportData, null, 2);
             const dataBlob = new Blob([dataStr], { type: 'application/json' });
             const url = URL.createObjectURL(dataBlob);
@@ -2036,29 +2160,17 @@
             link.download = 'export_data.json';
             link.click();
             URL.revokeObjectURL(url);
-            
-            // Show success message
             alert('✅ Data exported!\n\nNext steps:\n1. Place export_data.json in the same folder as generate_pptx.py\n2. Run: python generate_pptx.py\n3. Your PowerPoint will be generated!');
-            
             closeModal('pptxModal');
         }
 
-        // Utility functions
         function formatStatus(status) {
-            const map = {
-                'planning': 'Planning',
-                'progress': 'In Progress',
-                'done': 'Done'
-            };
+            const map = {'todo': 'To Do', 'planning': 'Planning', 'progress': 'In Progress', 'done': 'Done'};
             return map[status] || status;
         }
 
         function formatTaskStatus(status) {
-            const map = {
-                'todo': 'To Do',
-                'progress': 'In Progress',
-                'done': 'Done'
-            };
+            const map = {'todo': 'To Do', 'progress': 'In Progress', 'done': 'Done'};
             return map[status] || status;
         }
 
@@ -2070,10 +2182,6 @@
         function capitalize(str) {
             return str.charAt(0).toUpperCase() + str.slice(1);
         }
-
-        // Initialize with sample data (will be replaced by Firebase data if available)
-        // initSampleData(); // Moved to after login
-        // renderDashboard(); // Moved to after login
 
         // ============================================================================
         // FIREBASE CONFIGURATION - ACTIVE
@@ -2089,19 +2197,14 @@
           measurementId: "G-8JJVPCLR9S"
         };
         
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         
         console.log('🔥 Firebase initialized successfully');
         
-        // Override saveData to use Firestore
         const originalSaveData = saveData;
         saveData = function() {
-            // Save to localStorage as backup
             originalSaveData();
-            
-            // Save to Firestore
             db.collection('project-data').doc('main').set({
                 projects: projects,
                 tasks: tasks,
@@ -2114,7 +2217,6 @@
             });
         };
         
-        // Load data from Firestore on startup
         function loadFromFirestore() {
             db.collection('project-data').doc('main').get()
                 .then(doc => {
@@ -2127,7 +2229,6 @@
                         renderDashboard();
                     } else {
                         console.log('ℹ️  No data in Firestore yet, using sample data');
-                        // Save initial sample data to Firestore
                         saveData();
                     }
                 })
@@ -2137,17 +2238,13 @@
                 });
         }
         
-        // Setup real-time synchronization
         function setupRealtimeSync() {
             db.collection('project-data').doc('main').onSnapshot(doc => {
                 if (doc.exists) {
                     const data = doc.data();
                     projects = data.projects || [];
                     tasks = data.tasks || [];
-                    
                     console.log('📥 Data updated from Firestore (real-time sync)');
-                    
-                    // Re-render current view
                     const activeTab = document.querySelector('.tab.active');
                     if (activeTab) {
                         renderView(activeTab.dataset.view);
@@ -2158,28 +2255,18 @@
             });
         }
         
-        // Load data and setup sync after DOM is ready
-        // loadFromFirestore(); // Moved to after login
-        // setupRealtimeSync(); // Moved to after login
-        
         console.log('🚀 CWP Project Planner ready!');
         console.log('   📡 Real-time sync: ACTIVE');
-        console.log('   🔓 Access: OPEN (no authentication)');
+        console.log('   🔐 Authentication: ENABLED');
         
-        // ============================================================================
-        // START AUTHENTICATION CHECK
-        // ============================================================================
-        
-        // Check authentication on page load
         if (checkAuth()) {
-            // User already logged in
             showUserInfo(currentLoggedUser);
             initSampleData();
             renderDashboard();
             loadFromFirestore();
             setupRealtimeSync();
         }
-        // If not logged in, showLoginScreen() is called by checkAuth()
     </script>
 </body>
 </html>
+
