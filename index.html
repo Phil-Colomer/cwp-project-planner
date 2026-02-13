@@ -1293,90 +1293,17 @@
         let collapsedGroups = new Set();
         let currentCommentTaskId = null; // For tracking which task's comments are being viewed
 
-        // Initialize with sample data
+        // Initialize with empty data or load from storage
         function initSampleData() {
-            const hasData = localStorage.getItem('projects') || localStorage.getItem('tasks');
+            const hasLocalData = localStorage.getItem('projects') || localStorage.getItem('tasks');
             
-            if (!hasData) {
-                projects = [
-                    {
-                        id: 'proj-1',
-                        name: 'Customer Engagement Strategy',
-                        status: 'planning',
-                        owner: 'Sohrab Amin',
-                        startDate: '2023-12-18',
-                        endDate: '2023-12-24',
-                        priority: 'low',
-                        blockedBy: 'New Market Expansion'
-                    },
-                    {
-                        id: 'proj-2',
-                        name: 'Performance Enhancements',
-                        status: 'planning',
-                        owner: 'Sam Catania',
-                        startDate: '2024-01-01',
-                        endDate: '2024-01-28',
-                        priority: 'medium',
-                        blockedBy: 'Customer Engagement Strategy'
-                    },
-                    {
-                        id: 'proj-3',
-                        name: 'New Market Expansion',
-                        status: 'progress',
-                        owner: 'Andrea Lim',
-                        startDate: '2023-12-04',
-                        endDate: '2023-12-10',
-                        priority: 'high',
-                        blockedBy: ''
-                    }
-                ];
-
-                tasks = [
-                    {
-                        id: 'task-1',
-                        projectId: 'proj-1',
-                        name: 'Develop a survey to gather direct feedback from customers',
-                        area: 'Tech',
-                        status: 'done',
-                        assignee: 'Sohrab Amin',
-                        dueDate: '2023-12-25',
-                        priority: 'low'
-                    },
-                    {
-                        id: 'task-2',
-                        projectId: 'proj-1',
-                        name: 'Analyze current customer engagement metrics',
-                        area: 'Sales',
-                        status: 'progress',
-                        assignee: 'Sam Catania',
-                        dueDate: '2023-12-19',
-                        priority: 'medium'
-                    },
-                    {
-                        id: 'task-3',
-                        projectId: 'proj-3',
-                        name: 'Market research and competitive analysis',
-                        area: 'Marketing',
-                        status: 'done',
-                        assignee: 'Andrea Lim',
-                        dueDate: '2023-12-05',
-                        priority: 'high'
-                    },
-                    {
-                        id: 'task-4',
-                        projectId: 'proj-3',
-                        name: 'Develop go-to-market strategy',
-                        area: 'Sales',
-                        status: 'progress',
-                        assignee: 'Andrea Lim',
-                        dueDate: '2023-12-08',
-                        priority: 'high'
-                    }
-                ];
-
-                saveData();
-            } else {
+            if (hasLocalData) {
                 loadData();
+            } else {
+                // Start with empty arrays instead of sample data
+                projects = [];
+                tasks = [];
+                // Don't save empty data - let Firebase load first
             }
         }
 
@@ -2754,9 +2681,10 @@
             db.collection('projects').get()
                 .then(snapshot => {
                     if (snapshot.empty) {
-                        console.log('ℹ️  No projects in Firestore, using sample/local data');
-                        saveData(); // Migrate local data to Firestore
-                        return;
+                        console.log('ℹ️  No projects in Firestore');
+                        projects = [];
+                        // Don't save - just start with empty array
+                        return db.collection('tasks').get(); // Still check for tasks
                     }
                     
                     projects = [];
@@ -2886,6 +2814,7 @@
     </script>
 </body>
 </html>
+
 
 
 
