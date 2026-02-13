@@ -811,29 +811,348 @@
             color: #6c757d;
         }
 
+        /* ============================================
+           MOBILE RESPONSIVE STYLES
+           ============================================ */
+        
         @media (max-width: 768px) {
+            /* General */
+            body {
+                padding: 0;
+            }
+
+            .container {
+                border-radius: 0;
+            }
+
             .content {
-                padding: 20px;
+                padding: 12px;
+            }
+
+            /* Header */
+            .header {
+                padding: 20px 16px;
+            }
+
+            .header h1 {
+                font-size: 18px;
+            }
+
+            .user-info {
+                position: static;
+                margin-top: 12px;
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+
+            /* Tabs */
+            .tabs {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                padding: 0 8px;
+                gap: 4px;
+            }
+
+            .tab {
+                padding: 10px 16px;
+                font-size: 13px;
+                white-space: nowrap;
+                min-width: auto;
+            }
+
+            /* Dashboard Cards */
+            .dashboard-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+
+            .dashboard-card {
+                padding: 16px;
+            }
+
+            .card-value {
+                font-size: 32px;
+            }
+
+            .card-label {
+                font-size: 11px;
+            }
+
+            /* Filter Buttons */
+            .filter-buttons {
+                gap: 8px;
+                margin-bottom: 20px;
+            }
+
+            .filter-btn {
+                padding: 8px 16px;
+                font-size: 13px;
+            }
+
+            /* Filters */
+            .filters {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .filter-group {
+                width: 100%;
+            }
+
+            .filter-select {
+                font-size: 14px;
+            }
+
+            /* Section Headers */
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .section-title {
+                font-size: 18px;
+            }
+
+            .btn-group {
+                width: 100%;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .btn-group .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            /* Tables - Horizontal Scroll */
+            .table-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                margin: 0 -12px;
+                padding: 0 12px;
             }
 
             table {
                 font-size: 12px;
+                min-width: 100%;
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
             }
 
-            td, th {
-                padding: 8px;
+            thead, tbody, tr {
+                display: table;
+                width: 100%;
+                table-layout: fixed;
             }
 
+            th, td {
+                padding: 12px 8px;
+                font-size: 12px;
+            }
+
+            th:first-child, td:first-child {
+                position: sticky;
+                left: 0;
+                background: white;
+                z-index: 1;
+                min-width: 140px;
+            }
+
+            /* Make tables scrollable */
+            #dashboardOverview table,
+            .view table {
+                display: block;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            #dashboardOverview thead,
+            #dashboardOverview tbody,
+            .view thead,
+            .view tbody {
+                display: table;
+                width: 100%;
+            }
+
+            /* Buttons */
+            .btn {
+                padding: 10px 16px;
+                font-size: 13px;
+                white-space: nowrap;
+            }
+
+            .btn-primary {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+
+            /* Badges */
+            .status-badge, .priority-badge {
+                font-size: 11px;
+                padding: 4px 8px;
+            }
+
+            /* Progress Bar */
+            .progress-bar {
+                width: 60px !important;
+            }
+
+            /* Modals */
+            .modal-content {
+                width: 95%;
+                max-width: 95%;
+                max-height: 90vh;
+                overflow-y: auto;
+                margin: 20px auto;
+            }
+
+            .modal-header {
+                padding: 16px;
+            }
+
+            .modal-title {
+                font-size: 18px;
+            }
+
+            .form-group {
+                margin-bottom: 16px;
+            }
+
+            .form-label {
+                font-size: 13px;
+            }
+
+            .form-input, .form-select {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            /* Timeline */
             .timeline-label {
-                width: 150px;
+                width: 120px;
+                font-size: 11px;
+            }
+
+            .timeline-bar-container {
+                min-width: 200px;
             }
 
             .date-range-group {
                 grid-template-columns: 1fr;
+                gap: 12px;
             }
 
-            .filters {
-                flex-direction: column;
+            /* Empty States */
+            .empty-state {
+                padding: 32px 16px;
+            }
+
+            .empty-state-icon {
+                font-size: 48px;
+            }
+
+            .empty-state-text {
+                font-size: 16px;
+            }
+
+            .empty-state-subtext {
+                font-size: 13px;
+            }
+
+            /* Comments Modal */
+            #commentsHistory {
+                max-height: 300px;
+            }
+
+            .comment-item {
+                padding: 10px;
+                font-size: 13px;
+            }
+
+            /* Editable cells - Make them more touch-friendly */
+            .editable-cell {
+                min-height: 44px;
+                padding: 12px 8px;
+            }
+
+            /* Tooltips - Hide on mobile */
+            .tooltip {
+                display: none;
+            }
+
+            /* Dashboard Overview adjustments */
+            .dashboard-card {
+                min-height: 100px;
+            }
+
+            /* Project/Task Actions */
+            .clickable-row {
+                cursor: pointer;
+            }
+
+            /* Make action buttons larger for touch */
+            .clickable-row .btn {
+                min-width: 36px;
+                min-height: 36px;
+                padding: 8px;
+            }
+
+            /* Hide some columns on very small screens */
+            @media (max-width: 480px) {
+                .dashboard-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                th:nth-child(n+5), 
+                td:nth-child(n+5) {
+                    display: none;
+                }
+            }
+
+            /* Fix overflow issues */
+            .view {
+                overflow-x: hidden;
+            }
+
+            /* PPT Export Modal - Mobile friendly */
+            .pptx-projects-grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            .context-group {
+                padding: 12px;
+            }
+
+            textarea {
+                font-size: 14px;
+            }
+
+            /* User menu */
+            .user-info {
+                right: 16px;
+                top: 16px;
+            }
+        }
+
+        /* Extra small devices */
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 16px;
+            }
+
+            .tab {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+
+            .card-value {
+                font-size: 28px;
+            }
+
+            .section-title {
+                font-size: 16px;
             }
         }
     </style>
@@ -2814,6 +3133,7 @@
     </script>
 </body>
 </html>
+
 
 
 
