@@ -1742,51 +1742,6 @@
                 ` : ''}
             `;
         }
-                        <div class="empty-state-text">${message}</div>
-                        <div class="empty-state-subtext">Create your first project to get started</div>
-                        <button class="btn-primary btn" onclick="document.querySelector('[data-view=projects]').click(); openProjectModal();">+ New Project</button>
-                    </div>
-                `;
-            } else {
-                overview.innerHTML = `
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Project</th>
-                                <th>Status</th>
-                                <th>Owner</th>
-                                <th>Tasks</th>
-                                <th>Progress</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${filteredProjects.map(project => {
-                                const projectTasks = filteredTasks.filter(t => t.projectId === project.id);
-                                const completedTasks = projectTasks.filter(t => t.status === 'done').length;
-                                const progress = projectTasks.length > 0 ? Math.round((completedTasks / projectTasks.length) * 100) : 0;
-                                
-                                return `
-                                    <tr>
-                                        <td><strong>${project.name}</strong></td>
-                                        <td><span class="status-badge status-${project.status}">${formatStatus(project.status)}</span></td>
-                                        <td>${project.owner}</td>
-                                        <td>${completedTasks}/${projectTasks.length}</td>
-                                        <td>
-                                            <div style="display: flex; align-items: center; gap: 8px;">
-                                                <div class="progress-bar" style="flex: 1;">
-                                                    <div class="progress-fill" style="width: ${progress}%"></div>
-                                                </div>
-                                                <span style="font-size: 12px; color: #6c757d;">${progress}%</span>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                `;
-                            }).join('')}
-                        </tbody>
-                    </table>
-                `;
-            }
-        }
 
         function renderProjects() {
             // Update owner filter options
@@ -2931,5 +2886,6 @@
     </script>
 </body>
 </html>
+
 
 
