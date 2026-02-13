@@ -743,6 +743,28 @@
             margin-bottom: 0;
         }
 
+        /* Clickable rows for navigation */
+        .clickable-row {
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .clickable-row:hover {
+            background: #f0f7ff !important;
+        }
+
+        /* Edit button */
+        .edit-btn {
+            background: #f8f9fa !important;
+            border-color: #dee2e6 !important;
+        }
+
+        .edit-btn:hover {
+            background: #0052CC !important;
+            color: white !important;
+            border-color: #0052CC !important;
+        }
+
         @media (max-width: 768px) {
             .content {
                 padding: 20px;
@@ -990,7 +1012,6 @@
                     <label class="form-label">Area</label>
                     <select class="form-select" id="taskArea">
                         <option value="">Select Area</option>
-                        <option value="Producto">Producto</option>
                         <option value="Tech">Tech</option>
                         <option value="Sales">Sales</option>
                         <option value="Cx">Cx</option>
@@ -1013,8 +1034,12 @@
                     <input type="text" class="form-input" id="taskAssignee" required>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Due Date *</label>
-                    <input type="date" class="form-input" id="taskDueDate" required>
+                    <label class="form-label">Start Date *</label>
+                    <input type="date" class="form-input" id="taskStartDate" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">End Date *</label>
+                    <input type="date" class="form-input" id="taskEndDate" required>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Priority *</label>
@@ -1636,7 +1661,7 @@
                             const progress = projectTasks.length > 0 ? Math.round((completedTasks / projectTasks.length) * 100) : 0;
                             
                             return `
-                                <tr>
+                                <tr class="clickable-row" onclick="navigateToTasks('${project.id}')">
                                     <td><div class="editable-cell" data-project="${project.id}" data-field="name"><strong>${project.name}</strong></div></td>
                                     <td><div class="editable-cell" data-project="${project.id}" data-field="status"><span class="status-badge status-${project.status}">${formatStatus(project.status)}</span></div></td>
                                     <td><div class="editable-cell" data-project="${project.id}" data-field="owner">${project.owner}</div></td>
@@ -1655,7 +1680,10 @@
                                     </td>
                                     <td><div class="editable-cell" data-project="${project.id}" data-field="blockedBy" style="font-size: 12px; color: #6c757d;">${project.blockedBy || '-'}</div></td>
                                     <td>
-                                        <button class="btn" onclick="deleteProject('${project.id}')" style="padding: 4px 8px; font-size: 12px; position: relative;">
+                                        <button class="btn edit-btn" onclick="event.stopPropagation(); openEditProjectModal('${project.id}')" style="padding: 4px 8px; font-size: 12px;">
+                                            ✏️
+                                        </button>
+                                        <button class="btn" onclick="event.stopPropagation(); deleteProject('${project.id}')" style="padding: 4px 8px; font-size: 12px; position: relative;">
                                             🗑️
                                             <span class="tooltip">Delete project</span>
                                         </button>
@@ -1749,26 +1777,31 @@
                                     <th>Area</th>
                                     <th>Status</th>
                                     <th>Assignee</th>
-                                    <th>Due</th>
+                                    <th>Start</th>
+                                    <th>End</th>
                                     <th>Priority</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 ${projectTasks.map(task => `
-                                    <tr>
+                                    <tr class="clickable-row" onclick="navigateToTimeline('${task.projectId}')">
                                         <td><div class="editable-cell" data-task="${task.id}" data-field="name">${task.name}</div></td>
                                         <td><div class="editable-cell" data-task="${task.id}" data-field="area" style="font-size: 12px; color: #6c757d;">${task.area || '-'}</div></td>
                                         <td><div class="editable-cell" data-task="${task.id}" data-field="status"><span class="status-badge status-${task.status === 'todo' ? 'todo' : task.status === 'progress' ? 'progress' : 'done'}">${formatTaskStatus(task.status)}</span></div></td>
                                         <td><div class="editable-cell" data-task="${task.id}" data-field="assignee">${task.assignee}</div></td>
-                                        <td><div class="editable-cell" data-task="${task.id}" data-field="dueDate" style="font-size: 12px;">${formatDate(task.dueDate)}</div></td>
+                                        <td><div class="editable-cell" data-task="${task.id}" data-field="startDate" style="font-size: 12px;">${formatDate(task.startDate || task.dueDate)}</div></td>
+                                        <td><div class="editable-cell" data-task="${task.id}" data-field="endDate" style="font-size: 12px;">${formatDate(task.endDate || task.dueDate)}</div></td>
                                         <td><div class="editable-cell" data-task="${task.id}" data-field="priority"><span class="priority-badge priority-${task.priority}">${capitalize(task.priority)}</span></div></td>
                                         <td>
-                                            <button class="btn" onclick="toggleTaskStatus('${task.id}')" style="padding: 4px 8px; font-size: 12px; position: relative;">
+                                            <button class="btn edit-btn" onclick="event.stopPropagation(); openEditTaskModal('${task.id}')" style="padding: 4px 8px; font-size: 12px;">
+                                                ✏️
+                                            </button>
+                                            <button class="btn" onclick="event.stopPropagation(); toggleTaskStatus('${task.id}')" style="padding: 4px 8px; font-size: 12px; position: relative;">
                                                 ${task.status === 'done' ? '↩️' : '✓'}
                                                 <span class="tooltip">${task.status === 'done' ? 'Mark as incomplete' : 'Mark as complete'}</span>
                                             </button>
-                                            <button class="btn" onclick="deleteTask('${task.id}')" style="padding: 4px 8px; font-size: 12px; position: relative;">
+                                            <button class="btn" onclick="event.stopPropagation(); deleteTask('${task.id}')" style="padding: 4px 8px; font-size: 12px; position: relative;">
                                                 🗑️
                                                 <span class="tooltip">Delete task</span>
                                             </button>
@@ -1835,7 +1868,14 @@
                 return;
             }
 
-            const allDates = allTasks.map(t => new Date(t.dueDate));
+            // Collect all start and end dates
+            const allDates = [];
+            allTasks.forEach(t => {
+                if (t.startDate) allDates.push(new Date(t.startDate));
+                if (t.endDate) allDates.push(new Date(t.endDate));
+                if (t.dueDate && !t.endDate) allDates.push(new Date(t.dueDate)); // Fallback for old tasks
+            });
+            
             const minDate = new Date(Math.min(...allDates));
             const maxDate = new Date(Math.max(...allDates));
             
@@ -1858,11 +1898,14 @@
                     <div style="margin-bottom: 32px;">
                         <div style="font-weight: 600; font-size: 14px; padding: 8px 0; margin-bottom: 8px; color: #0052CC;">${project.name} (${projectTasks.length} tasks)</div>
                         ${projectTasks.map(task => {
-                            const dueDate = new Date(task.dueDate);
-                            const startDate = new Date(dueDate);
-                            startDate.setDate(dueDate.getDate() - 7);
+                            // Use new startDate and endDate fields, fallback to dueDate for old tasks
+                            const taskEndDate = task.endDate || task.dueDate;
+                            const taskStartDate = task.startDate || task.dueDate;
                             
-                            const duration = 7;
+                            const endDate = new Date(taskEndDate);
+                            const startDate = new Date(taskStartDate);
+                            
+                            const duration = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) || 7;
                             const offset = Math.ceil((startDate - minDate) / (1000 * 60 * 60 * 24));
                             const leftPercent = (offset / totalDays) * 100;
                             const widthPercent = (duration / totalDays) * 100;
@@ -2020,7 +2063,8 @@
                 area: document.getElementById('taskArea').value,
                 status: document.getElementById('taskStatus').value,
                 assignee: document.getElementById('taskAssignee').value,
-                dueDate: document.getElementById('taskDueDate').value,
+                startDate: document.getElementById('taskStartDate').value,
+                endDate: document.getElementById('taskEndDate').value,
                 priority: document.getElementById('taskPriority').value
             };
             tasks.push(task);
@@ -2195,6 +2239,134 @@
         function formatDate(dateString) {
             const date = new Date(dateString);
             return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        // Navigation functions
+        function navigateToTasks(projectId) {
+            // Prevent if clicked on a button or editable cell
+            if (event && event.target.closest('.btn, .editable-cell, .edit-btn, button')) {
+                return;
+            }
+            
+            // Switch to Tasks view
+            document.querySelector('[data-view="tasks"]').click();
+        }
+
+        function navigateToTimeline(projectId) {
+            if (event && event.target.closest('.btn, .editable-cell, .edit-btn, button')) {
+                return;
+            }
+            
+            // Switch to Timeline view
+            document.querySelector('[data-view="timeline"]').click();
+            
+            // Filter by the project
+            setTimeout(() => {
+                const filterSelect = document.getElementById('timelineProjectFilter');
+                if (filterSelect) {
+                    filterSelect.value = projectId;
+                    renderTimeline();
+                }
+            }, 100);
+        }
+
+        // Edit modal functions
+        function openEditProjectModal(projectId) {
+            const project = projects.find(p => p.id === projectId);
+            if (!project) return;
+            
+            // Fill modal with existing data
+            document.getElementById('projectName').value = project.name;
+            document.getElementById('projectStatus').value = project.status;
+            document.getElementById('projectOwner').value = project.owner;
+            document.getElementById('projectStartDate').value = project.startDate;
+            document.getElementById('projectEndDate').value = project.endDate;
+            document.getElementById('projectPriority').value = project.priority;
+            document.getElementById('projectBlockedBy').value = project.blockedBy || '';
+            
+            // Change modal title
+            document.querySelector('#projectModal .modal-title').textContent = 'Edit Project';
+            
+            // Change form to update instead of create
+            const form = document.querySelector('#projectModal form');
+            form.onsubmit = (e) => {
+                e.preventDefault();
+                updateExistingProject(projectId);
+            };
+            
+            document.getElementById('projectModal').classList.add('active');
+        }
+
+        function updateExistingProject(projectId) {
+            const project = projects.find(p => p.id === projectId);
+            if (!project) return;
+            
+            project.name = document.getElementById('projectName').value;
+            project.status = document.getElementById('projectStatus').value;
+            project.owner = document.getElementById('projectOwner').value;
+            project.startDate = document.getElementById('projectStartDate').value;
+            project.endDate = document.getElementById('projectEndDate').value;
+            project.priority = document.getElementById('projectPriority').value;
+            project.blockedBy = document.getElementById('projectBlockedBy').value;
+            
+            saveData();
+            closeModal('projectModal');
+            
+            // Reset modal for create
+            document.querySelector('#projectModal .modal-title').textContent = 'New Project';
+            const form = document.querySelector('#projectModal form');
+            form.onsubmit = saveNewProject;
+            document.querySelector('#projectModal form').reset();
+            
+            renderProjects();
+        }
+
+        function openEditTaskModal(taskId) {
+            const task = tasks.find(t => t.id === taskId);
+            if (!task) return;
+            
+            document.getElementById('taskProject').value = task.projectId;
+            document.getElementById('taskName').value = task.name;
+            document.getElementById('taskArea').value = task.area || '';
+            document.getElementById('taskStatus').value = task.status;
+            document.getElementById('taskAssignee').value = task.assignee;
+            document.getElementById('taskStartDate').value = task.startDate || task.dueDate || '';
+            document.getElementById('taskEndDate').value = task.endDate || task.dueDate || '';
+            document.getElementById('taskPriority').value = task.priority;
+            
+            document.querySelector('#taskModal .modal-title').textContent = 'Edit Task';
+            
+            const form = document.querySelector('#taskModal form');
+            form.onsubmit = (e) => {
+                e.preventDefault();
+                updateExistingTask(taskId);
+            };
+            
+            document.getElementById('taskModal').classList.add('active');
+        }
+
+        function updateExistingTask(taskId) {
+            const task = tasks.find(t => t.id === taskId);
+            if (!task) return;
+            
+            task.projectId = document.getElementById('taskProject').value;
+            task.name = document.getElementById('taskName').value;
+            task.area = document.getElementById('taskArea').value;
+            task.status = document.getElementById('taskStatus').value;
+            task.assignee = document.getElementById('taskAssignee').value;
+            task.startDate = document.getElementById('taskStartDate').value;
+            task.endDate = document.getElementById('taskEndDate').value;
+            task.priority = document.getElementById('taskPriority').value;
+            
+            saveData();
+            closeModal('taskModal');
+            
+            document.querySelector('#taskModal .modal-title').textContent = 'New Task';
+            const form = document.querySelector('#taskModal form');
+            form.onsubmit = saveNewTask;
+            document.querySelector('#taskModal form').reset();
+            
+            renderTasks();
         }
 
         function capitalize(str) {
