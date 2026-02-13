@@ -38,7 +38,7 @@
         .header {
             padding: 40px;
             border-bottom: 1px solid #e0e0e0;
-            background: linear-gradient(135deg, #0052CC 0%, #0065FF 100%);
+            background: linear-gradient(135deg, #FF6B35 0%, #FF4757 100%);
             color: white;
         }
 
@@ -84,13 +84,13 @@
         }
 
         .tab:hover {
-            color: #0052CC;
+            color: #E91E63;
             background: #e8f2ff;
         }
 
         .tab.active {
-            color: #0052CC;
-            border-bottom-color: #0052CC;
+            color: #E91E63;
+            border-bottom-color: #E91E63;
             font-weight: 600;
         }
 
@@ -147,14 +147,14 @@
         }
 
         .btn-primary {
-            background: #0052CC;
+            background: #E91E63;
             color: white;
-            border-color: #0052CC;
+            border-color: #E91E63;
         }
 
         .btn-primary:hover {
-            background: #003d99;
-            border-color: #003d99;
+            background: #C2185B;
+            border-color: #C2185B;
         }
 
         .btn-group {
@@ -226,7 +226,7 @@
 
         .filter-select:focus {
             outline: none;
-            border-color: #0052CC;
+            border-color: #E91E63;
         }
 
         /* Date Filter Buttons */
@@ -253,14 +253,14 @@
         }
 
         .date-filter-btn:hover {
-            border-color: #0052CC;
-            color: #0052CC;
+            border-color: #E91E63;
+            color: #E91E63;
         }
 
         .date-filter-btn.active {
-            background: #0052CC;
+            background: #E91E63;
             color: white;
-            border-color: #0052CC;
+            border-color: #E91E63;
         }
 
         /* Status badges */
@@ -297,6 +297,12 @@
             color: #0a3622;
         }
 
+        .status-overdue {
+            background: #f8d7da;
+            color: #842029;
+            font-weight: 600;
+        }
+
         /* Editable cells */
         .editable-cell {
             cursor: pointer;
@@ -310,14 +316,14 @@
 
         .editable-cell:hover {
             background: #f8f9fa;
-            box-shadow: 0 0 0 2px #0052CC;
+            box-shadow: 0 0 0 2px #E91E63;
         }
 
         .editable-cell input,
         .editable-cell select {
             width: 100%;
             padding: 6px 8px;
-            border: 2px solid #0052CC;
+            border: 2px solid #E91E63;
             border-radius: 4px;
             font-size: 14px;
             font-family: inherit;
@@ -386,7 +392,7 @@
 
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #0052CC 0%, #0065FF 100%);
+            background: linear-gradient(90deg, #E91E63 0%, #0065FF 100%);
             transition: width 0.3s;
         }
 
@@ -462,7 +468,7 @@
         }
 
         .timeline-bar-planning {
-            background: linear-gradient(135deg, #0052CC 0%, #0065FF 100%);
+            background: linear-gradient(135deg, #E91E63 0%, #0065FF 100%);
         }
 
         .timeline-bar-progress {
@@ -507,7 +513,7 @@
 
         .project-selector select:focus {
             outline: none;
-            border-color: #0052CC;
+            border-color: #E91E63;
         }
 
         /* Modal */
@@ -592,7 +598,7 @@
         .form-input:focus,
         .form-select:focus {
             outline: none;
-            border-color: #0052CC;
+            border-color: #E91E63;
         }
 
         textarea.form-input {
@@ -608,7 +614,7 @@
         }
 
         .dashboard-card {
-            background: linear-gradient(135deg, #0052CC 0%, #0065FF 100%);
+            background: linear-gradient(135deg, #E91E63 0%, #0065FF 100%);
             color: white;
             padding: 24px;
             border-radius: 12px;
@@ -725,14 +731,14 @@
             padding: 16px;
             background: #f8f9fa;
             border-radius: 8px;
-            border-left: 4px solid #0052CC;
+            border-left: 4px solid #E91E63;
         }
 
         .project-context h4 {
             font-size: 14px;
             font-weight: 600;
             margin-bottom: 12px;
-            color: #0052CC;
+            color: #E91E63;
         }
 
         .context-group {
@@ -760,9 +766,9 @@
         }
 
         .edit-btn:hover {
-            background: #0052CC !important;
+            background: #E91E63 !important;
             color: white !important;
-            border-color: #0052CC !important;
+            border-color: #E91E63 !important;
         }
 
         /* Comments */
@@ -771,7 +777,7 @@
             margin-bottom: 12px;
             background: #f8f9fa;
             border-radius: 8px;
-            border-left: 3px solid #0052CC;
+            border-left: 3px solid #E91E63;
         }
 
         .comment-header {
@@ -784,7 +790,7 @@
         .comment-author {
             font-weight: 600;
             font-size: 13px;
-            color: #0052CC;
+            color: #E91E63;
         }
 
         .comment-date {
@@ -859,19 +865,19 @@
                 <div class="dashboard-grid" id="dashboardStats">
                     <div class="dashboard-card">
                         <div class="card-value" id="totalProjects">0</div>
-                        <div class="card-label">Total Projects</div>
+                        <div class="card-label">Active Projects</div>
                     </div>
                     <div class="dashboard-card secondary">
                         <div class="card-value" id="activeProjects">0</div>
-                        <div class="card-label">Active Projects</div>
+                        <div class="card-label">Active Tasks</div>
                     </div>
                     <div class="dashboard-card tertiary">
                         <div class="card-value" id="totalTasks">0</div>
-                        <div class="card-label">Total Tasks</div>
+                        <div class="card-label">Tasks Ending in Period</div>
                     </div>
                     <div class="dashboard-card quaternary">
                         <div class="card-value" id="completedTasks">0</div>
-                        <div class="card-label">Completed Tasks</div>
+                        <div class="card-label">Overdue Tasks</div>
                     </div>
                 </div>
 
@@ -1190,13 +1196,13 @@
             loginOverlay.id = 'loginOverlay';
             loginOverlay.style.cssText = `
                 position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-                background: linear-gradient(135deg, #0052CC 0%, #0065FF 100%);
+                background: linear-gradient(135deg, #E91E63 0%, #0065FF 100%);
                 display: flex; align-items: center; justify-content: center; z-index: 10000;
             `;
             
             loginOverlay.innerHTML = `
                 <div style="background: white; padding: 48px; border-radius: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); max-width: 400px; width: 90%;">
-                    <div style="width: 80px; height: 80px; margin: 0 auto 24px; background: linear-gradient(135deg, #0052CC 0%, #0065FF 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                    <div style="width: 80px; height: 80px; margin: 0 auto 24px; background: linear-gradient(135deg, #E91E63 0%, #0065FF 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
                         <span style="font-size: 40px;">🎯</span>
                     </div>
                     <h2 style="margin: 0 0 8px; color: #2c3e50; font-size: 24px; text-align: center;">CWP Project Planner</h2>
@@ -1213,7 +1219,7 @@
                             <label style="display: block; font-size: 14px; font-weight: 500; color: #2c3e50; margin-bottom: 8px;">Contraseña</label>
                             <input type="password" id="loginPassword" required style="width: 100%; padding: 12px; border: 1px solid #dee2e6; border-radius: 6px; font-size: 14px;" placeholder="Ingresa tu contraseña">
                         </div>
-                        <button type="submit" style="width: 100%; padding: 14px; background: linear-gradient(135deg, #0052CC 0%, #0065FF 100%); color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: 600; cursor: pointer;">
+                        <button type="submit" style="width: 100%; padding: 14px; background: linear-gradient(135deg, #E91E63 0%, #0065FF 100%); color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: 600; cursor: pointer;">
                             Iniciar Sesión
                         </button>
                     </form>
@@ -1257,7 +1263,7 @@
             `;
             
             userDisplay.innerHTML = `
-                <div style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #0052CC 0%, #0065FF 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 14px;">
+                <div style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #E91E63 0%, #0065FF 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 14px;">
                     ${username.charAt(0).toUpperCase()}
                 </div>
                 <div style="flex: 1;">
@@ -1396,7 +1402,7 @@
                 if (options) {
                     // Dropdown
                     const select = document.createElement('select');
-                    select.style.cssText = 'width: 100%; padding: 6px 8px; border: 2px solid #0052CC; border-radius: 4px; font-size: 14px;';
+                    select.style.cssText = 'width: 100%; padding: 6px 8px; border: 2px solid #E91E63; border-radius: 4px; font-size: 14px;';
                     
                     options.forEach(opt => {
                         const option = document.createElement('option');
@@ -1424,7 +1430,7 @@
                     const input = document.createElement('input');
                     input.type = field.includes('Date') ? 'date' : 'text';
                     input.value = field.includes('Date') ? currentValue.split(' ')[0] : currentValue;
-                    input.style.cssText = 'width: 100%; padding: 6px 8px; border: 2px solid #0052CC; border-radius: 4px; font-size: 14px;';
+                    input.style.cssText = 'width: 100%; padding: 6px 8px; border: 2px solid #E91E63; border-radius: 4px; font-size: 14px;';
                     
                     input.onblur = () => {
                         if (input.value.trim() !== currentValue) {
@@ -1455,7 +1461,7 @@
                 
                 if (options) {
                     const select = document.createElement('select');
-                    select.style.cssText = 'width: 100%; padding: 6px 8px; border: 2px solid #0052CC; border-radius: 4px; font-size: 14px;';
+                    select.style.cssText = 'width: 100%; padding: 6px 8px; border: 2px solid #E91E63; border-radius: 4px; font-size: 14px;';
                     
                     options.forEach(opt => {
                         const option = document.createElement('option');
@@ -1482,7 +1488,7 @@
                     const input = document.createElement('input');
                     input.type = field.includes('Date') ? 'date' : 'text';
                     input.value = field.includes('Date') ? currentValue : currentValue;
-                    input.style.cssText = 'width: 100%; padding: 6px 8px; border: 2px solid #0052CC; border-radius: 4px; font-size: 14px;';
+                    input.style.cssText = 'width: 100%; padding: 6px 8px; border: 2px solid #E91E63; border-radius: 4px; font-size: 14px;';
                     
                     input.onblur = () => {
                         if (input.value.trim() !== currentValue) {
@@ -1562,9 +1568,13 @@
             
             if (currentDashboardFilter === 'today') {
                 const filteredTasks = tasks.filter(task => {
-                    const dueDate = new Date(task.dueDate);
-                    dueDate.setHours(0, 0, 0, 0);
-                    return dueDate.getTime() === today.getTime();
+                    const taskStart = new Date(task.startDate || task.dueDate || task.endDate);
+                    const taskEnd = new Date(task.endDate || task.dueDate || task.startDate);
+                    taskStart.setHours(0, 0, 0, 0);
+                    taskEnd.setHours(0, 0, 0, 0);
+                    
+                    // Task is active today if it overlaps with today
+                    return taskStart <= today && taskEnd >= today;
                 });
                 
                 const projectIds = new Set(filteredTasks.map(t => t.projectId));
@@ -1573,8 +1583,11 @@
                 return { projects: filteredProjects, tasks: filteredTasks };
             } else if (currentDashboardFilter === 'week') {
                 const filteredTasks = tasks.filter(task => {
-                    const dueDate = new Date(task.dueDate);
-                    return dueDate >= weekStart && dueDate <= weekEnd;
+                    const taskStart = new Date(task.startDate || task.dueDate || task.endDate);
+                    const taskEnd = new Date(task.endDate || task.dueDate || task.startDate);
+                    
+                    // Task overlaps with week if it starts before week ends AND ends after week starts
+                    return taskStart <= weekEnd && taskEnd >= weekStart;
                 });
                 
                 const projectIds = new Set(filteredTasks.map(t => t.projectId));
@@ -1586,23 +1599,149 @@
             return { projects, tasks };
         }
 
+        function getOverdueTasks() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            return tasks.filter(task => {
+                if (task.status === 'done') return false;
+                
+                const taskEnd = new Date(task.endDate || task.dueDate);
+                taskEnd.setHours(0, 0, 0, 0);
+                
+                return taskEnd < today;
+            });
+        }
+
+        function getTasksEndingInPeriod() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            const weekStart = new Date(today);
+            weekStart.setDate(today.getDate() - today.getDay());
+            
+            const weekEnd = new Date(weekStart);
+            weekEnd.setDate(weekStart.getDate() + 6);
+            weekEnd.setHours(23, 59, 59, 999);
+            
+            if (currentDashboardFilter === 'today') {
+                return tasks.filter(task => {
+                    const taskEnd = new Date(task.endDate || task.dueDate);
+                    taskEnd.setHours(0, 0, 0, 0);
+                    return taskEnd.getTime() === today.getTime();
+                });
+            } else if (currentDashboardFilter === 'week') {
+                return tasks.filter(task => {
+                    const taskEnd = new Date(task.endDate || task.dueDate);
+                    return taskEnd >= weekStart && taskEnd <= weekEnd;
+                });
+            }
+            
+            return tasks;
+        }
+
         function renderDashboard() {
             const { projects: filteredProjects, tasks: filteredTasks } = getFilteredData();
+            const overdueTasks = getOverdueTasks();
+            const tasksEndingInPeriod = getTasksEndingInPeriod();
             
-            document.getElementById('totalProjects').textContent = filteredProjects.length;
-            document.getElementById('activeProjects').textContent = filteredProjects.filter(p => p.status !== 'done').length;
-            document.getElementById('totalTasks').textContent = filteredTasks.length;
-            document.getElementById('completedTasks').textContent = filteredTasks.filter(t => t.status === 'done').length;
+            // Update metrics
+            document.getElementById('totalProjects').textContent = filteredProjects.filter(p => p.status !== 'done').length; // Active Projects
+            document.getElementById('activeProjects').textContent = filteredTasks.filter(t => t.status !== 'done').length; // Active Tasks
+            document.getElementById('totalTasks').textContent = tasksEndingInPeriod.length; // Tasks Ending in Period
+            document.getElementById('completedTasks').textContent = overdueTasks.length; // Overdue Tasks
 
             const overview = document.getElementById('dashboardOverview');
             if (filteredProjects.length === 0) {
                 let message = 'No projects';
-                if (currentDashboardFilter === 'today') message += ' with tasks due today';
-                else if (currentDashboardFilter === 'week') message += ' with tasks due this week';
+                if (currentDashboardFilter === 'today') message += ' with tasks active today';
+                else if (currentDashboardFilter === 'week') message += ' with tasks active this week';
                 
                 overview.innerHTML = `
                     <div class="empty-state">
                         <div class="empty-state-icon">📋</div>
+                        <div class="empty-state-text">${message}</div>
+                        <div class="empty-state-subtext">Create your first project to get started</div>
+                        <button class="btn-primary btn" onclick="openProjectModal()">+ New Project</button>
+                    </div>
+                `;
+                return;
+            }
+
+            overview.innerHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Project</th>
+                            <th>Status</th>
+                            <th>Owner</th>
+                            <th>Tasks</th>
+                            <th>Progress</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${filteredProjects.map(project => {
+                            const projectTasks = filteredTasks.filter(t => t.projectId === project.id);
+                            const completedTasks = projectTasks.filter(t => t.status === 'done').length;
+                            const progress = projectTasks.length > 0 ? Math.round((completedTasks / projectTasks.length) * 100) : 0;
+                            
+                            return `
+                                <tr>
+                                    <td><strong>${project.name}</strong></td>
+                                    <td><span class="status-badge status-${project.status}">${formatStatus(project.status)}</span></td>
+                                    <td>${project.owner}</td>
+                                    <td>${completedTasks}/${projectTasks.length}</td>
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <span style="font-size: 12px;">${progress}%</span>
+                                            <div class="progress-bar" style="width: 80px;">
+                                                <div class="progress-fill" style="width: ${progress}%"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+
+                ${overdueTasks.length > 0 ? `
+                    <div style="margin-top: 40px;">
+                        <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 16px; color: #dc3545;">⚠️ Overdue Tasks</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Task</th>
+                                    <th>Project</th>
+                                    <th>Assignee</th>
+                                    <th>End Date</th>
+                                    <th>Days Overdue</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${overdueTasks.map(task => {
+                                    const project = projects.find(p => p.id === task.projectId);
+                                    const endDate = new Date(task.endDate || task.dueDate);
+                                    const today = new Date();
+                                    today.setHours(0, 0, 0, 0);
+                                    const daysOverdue = Math.floor((today - endDate) / (1000 * 60 * 60 * 24));
+                                    
+                                    return `
+                                        <tr style="background: #fff5f5;">
+                                            <td><strong>${task.name}</strong></td>
+                                            <td>${project ? project.name : '-'}</td>
+                                            <td>${task.assignee}</td>
+                                            <td style="color: #dc3545;">${formatDate(task.endDate || task.dueDate)}</td>
+                                            <td><span style="color: #dc3545; font-weight: 600;">${daysOverdue} day${daysOverdue !== 1 ? 's' : ''}</span></td>
+                                        </tr>
+                                    `;
+                                }).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                ` : ''}
+            `;
+        }
                         <div class="empty-state-text">${message}</div>
                         <div class="empty-state-subtext">Create your first project to get started</div>
                         <button class="btn-primary btn" onclick="document.querySelector('[data-view=projects]').click(); openProjectModal();">+ New Project</button>
@@ -1850,11 +1989,13 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                ${projectTasks.map(task => `
+                                ${projectTasks.map(task => {
+                                    const displayStatus = getTaskDisplayStatus(task);
+                                    return `
                                     <tr class="clickable-row" onclick="navigateToTimeline('${task.projectId}')">
                                         <td><div class="editable-cell" data-task="${task.id}" data-field="name">${task.name}</div></td>
                                         <td><div class="editable-cell" data-task="${task.id}" data-field="area" style="font-size: 12px; color: #6c757d;">${task.area || '-'}</div></td>
-                                        <td><div class="editable-cell" data-task="${task.id}" data-field="status"><span class="status-badge status-${task.status === 'todo' ? 'todo' : task.status === 'progress' ? 'progress' : 'done'}">${formatTaskStatus(task.status)}</span></div></td>
+                                        <td><div class="editable-cell" data-task="${task.id}" data-field="status"><span class="status-badge status-${displayStatus}">${formatTaskStatus(displayStatus)}</span></div></td>
                                         <td><div class="editable-cell" data-task="${task.id}" data-field="assignee">${task.assignee}</div></td>
                                         <td><div class="editable-cell" data-task="${task.id}" data-field="startDate" style="font-size: 12px;">${formatDate(task.startDate || task.dueDate)}</div></td>
                                         <td><div class="editable-cell" data-task="${task.id}" data-field="endDate" style="font-size: 12px;">${formatDate(task.endDate || task.dueDate)}</div></td>
@@ -1877,7 +2018,8 @@
                                             </button>
                                         </td>
                                     </tr>
-                                `).join('')}
+                                `;
+                                }).join('')}
                             </tbody>
                         </table>
                     </div>
@@ -1966,7 +2108,7 @@
                 <div class="timeline-header">${months.map(month => `<div class="timeline-month">${month.label}</div>`).join('')}</div>
                 ${projectGroups.map(({ project, tasks: projectTasks }) => `
                     <div style="margin-bottom: 32px;">
-                        <div style="font-weight: 600; font-size: 14px; padding: 8px 0; margin-bottom: 8px; color: #0052CC;">${project.name} (${projectTasks.length} tasks)</div>
+                        <div style="font-weight: 600; font-size: 14px; padding: 8px 0; margin-bottom: 8px; color: #E91E63;">${project.name} (${projectTasks.length} tasks)</div>
                         ${projectTasks.map(task => {
                             // Use new startDate and endDate fields, fallback to dueDate for old tasks
                             const taskEndDate = task.endDate || task.dueDate;
@@ -2305,8 +2447,32 @@
             return map[status] || status;
         }
 
+        function isTaskOverdue(task) {
+            if (task.status === 'done') return false;
+            
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            const taskEnd = new Date(task.endDate || task.dueDate);
+            taskEnd.setHours(0, 0, 0, 0);
+            
+            return taskEnd < today;
+        }
+
+        function getTaskDisplayStatus(task) {
+            if (isTaskOverdue(task)) {
+                return 'overdue';
+            }
+            return task.status;
+        }
+
         function formatTaskStatus(status) {
-            const map = {'todo': 'To Do', 'progress': 'In Progress', 'done': 'Done'};
+            const map = {
+                'todo': 'To Do', 
+                'progress': 'In Progress', 
+                'done': 'Done',
+                'overdue': 'Overdue'
+            };
             return map[status] || status;
         }
 
