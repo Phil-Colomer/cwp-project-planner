@@ -1002,6 +1002,165 @@
     </div>
 
     <script>
+        // ============================================================================
+        // AUTHENTICATION SYSTEM
+        // ============================================================================
+        
+        // USUARIOS AUTORIZADOS - Edita esta lista para agregar/quitar usuarios
+        const AUTHORIZED_USERS = {
+            "admin": "cwp2024",
+            "keyla": "keyla.perez",
+            "roger": "roger.avila",
+            "gloria": "gloria.moreno"
+            // Agregar más usuarios aquí siguiendo el formato: "usuario": "contraseña"
+        };
+        
+        let currentLoggedUser = null;
+        
+        // Check if user is logged in
+        function checkAuth() {
+            const loggedUser = sessionStorage.getItem('cwp_logged_user');
+            if (!loggedUser) {
+                showLoginScreen();
+                return false;
+            }
+            currentLoggedUser = loggedUser;
+            return true;
+        }
+        
+        // Show login screen
+        function showLoginScreen() {
+            const loginOverlay = document.createElement('div');
+            loginOverlay.id = 'loginOverlay';
+            loginOverlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(135deg, #0052CC 0%, #0065FF 100%);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10000;
+            `;
+            
+            loginOverlay.innerHTML = `
+                <div style="background: white; padding: 48px; border-radius: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); max-width: 400px; width: 90%;">
+                    <div style="width: 80px; height: 80px; margin: 0 auto 24px; background: linear-gradient(135deg, #0052CC 0%, #0065FF 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <span style="font-size: 40px;">🎯</span>
+                    </div>
+                    <h2 style="margin: 0 0 8px; color: #2c3e50; font-size: 24px; text-align: center;">CWP Project Planner</h2>
+                    <p style="margin: 0 0 32px; color: #6c757d; font-size: 14px; text-align: center;">Product Development Team</p>
+                    
+                    <div id="loginError" style="display: none; padding: 12px; background: #f8d7da; color: #721c24; border-radius: 6px; margin-bottom: 16px; font-size: 14px; text-align: center;"></div>
+                    
+                    <form id="loginForm" onsubmit="handleLogin(event)">
+                        <div style="margin-bottom: 16px;">
+                            <label style="display: block; font-size: 14px; font-weight: 500; color: #2c3e50; margin-bottom: 8px;">Usuario</label>
+                            <input type="text" id="loginUsername" required style="width: 100%; padding: 12px; border: 1px solid #dee2e6; border-radius: 6px; font-size: 14px;" placeholder="Ingresa tu usuario">
+                        </div>
+                        <div style="margin-bottom: 24px;">
+                            <label style="display: block; font-size: 14px; font-weight: 500; color: #2c3e50; margin-bottom: 8px;">Contraseña</label>
+                            <input type="password" id="loginPassword" required style="width: 100%; padding: 12px; border: 1px solid #dee2e6; border-radius: 6px; font-size: 14px;" placeholder="Ingresa tu contraseña">
+                        </div>
+                        <button type="submit" style="width: 100%; padding: 14px; background: linear-gradient(135deg, #0052CC 0%, #0065FF 100%); color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: 600; cursor: pointer;">
+                            Iniciar Sesión
+                        </button>
+                    </form>
+                </div>
+            `;
+            
+            document.body.appendChild(loginOverlay);
+            document.getElementById('loginUsername').focus();
+        }
+        
+        // Handle login
+        function handleLogin(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const errorDiv = document.getElementById('loginError');
+            
+            if (AUTHORIZED_USERS[username] && AUTHORIZED_USERS[username] === password) {
+                // Login successful
+                sessionStorage.setItem('cwp_logged_user', username);
+                currentLoggedUser = username;
+                
+                // Remove login overlay
+                document.getElementById('loginOverlay').remove();
+                
+                // Show user info
+                showUserInfo(username);
+                
+                // Initialize app
+                initSampleData();
+                renderDashboard();
+                loadFromFirestore();
+                setupRealtimeSync();
+                
+            } else {
+                // Login failed
+                errorDiv.textContent = '❌ Usuario o contraseña incorrectos';
+                errorDiv.style.display = 'block';
+                document.getElementById('loginPassword').value = '';
+                document.getElementById('loginPassword').focus();
+            }
+        }
+        
+        // Show user info in header
+        function showUserInfo(username) {
+            const userDisplay = document.createElement('div');
+            userDisplay.id = 'userDisplay';
+            userDisplay.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: white;
+                padding: 12px 16px;
+                border-radius: 8px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                z-index: 1000;
+            `;
+            
+            userDisplay.innerHTML = `
+                <div style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #0052CC 0%, #0065FF 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 14px;">
+                    ${username.charAt(0).toUpperCase()}
+                </div>
+                <div style="flex: 1;">
+                    <div style="font-size: 14px; font-weight: 600; color: #2c3e50;">${username}</div>
+                    <div style="font-size: 12px; color: #6c757d;">Sesión activa</div>
+                </div>
+                <button onclick="handleLogout()" style="
+                    padding: 6px 12px;
+                    background: #f8f9fa;
+                    border: 1px solid #dee2e6;
+                    border-radius: 6px;
+                    font-size: 12px;
+                    cursor: pointer;
+                    color: #6c757d;
+                ">Salir</button>
+            `;
+            
+            document.body.appendChild(userDisplay);
+        }
+        
+        // Handle logout
+        function handleLogout() {
+            if (confirm('¿Estás seguro que deseas cerrar sesión?')) {
+                sessionStorage.removeItem('cwp_logged_user');
+                location.reload();
+            }
+        }
+        
+        // ============================================================================
+        // APP CODE (ORIGINAL)
+        // ============================================================================
+        
         // Data structure
         let projects = [];
         let tasks = [];
@@ -1913,8 +2072,8 @@
         }
 
         // Initialize with sample data (will be replaced by Firebase data if available)
-        initSampleData();
-        renderDashboard();
+        // initSampleData(); // Moved to after login
+        // renderDashboard(); // Moved to after login
 
         // ============================================================================
         // FIREBASE CONFIGURATION - ACTIVE
@@ -2000,12 +2159,27 @@
         }
         
         // Load data and setup sync after DOM is ready
-        loadFromFirestore();
-        setupRealtimeSync();
+        // loadFromFirestore(); // Moved to after login
+        // setupRealtimeSync(); // Moved to after login
         
         console.log('🚀 CWP Project Planner ready!');
         console.log('   📡 Real-time sync: ACTIVE');
         console.log('   🔓 Access: OPEN (no authentication)');
+        
+        // ============================================================================
+        // START AUTHENTICATION CHECK
+        // ============================================================================
+        
+        // Check authentication on page load
+        if (checkAuth()) {
+            // User already logged in
+            showUserInfo(currentLoggedUser);
+            initSampleData();
+            renderDashboard();
+            loadFromFirestore();
+            setupRealtimeSync();
+        }
+        // If not logged in, showLoginScreen() is called by checkAuth()
     </script>
 </body>
 </html>
