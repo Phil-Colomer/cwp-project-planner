@@ -924,7 +924,7 @@
                 <h3 class="modal-title">New Project</h3>
                 <button class="close-btn" onclick="closeModal('projectModal')">&times;</button>
             </div>
-            <form onsubmit="saveProject(event)">
+            <form onsubmit="saveNewProject(event)">
                 <div class="form-group">
                     <label class="form-label">Project Name *</label>
                     <input type="text" class="form-input" id="projectName" required>
@@ -977,7 +977,7 @@
                 <h3 class="modal-title">New Task</h3>
                 <button class="close-btn" onclick="closeModal('taskModal')">&times;</button>
             </div>
-            <form onsubmit="saveTask(event)">
+            <form onsubmit="saveNewTask(event)">
                 <div class="form-group">
                     <label class="form-label">Project *</label>
                     <select class="form-select" id="taskProject" required></select>
@@ -1991,7 +1991,7 @@
             `).join('');
         }
 
-        function saveProject(e) {
+        function saveNewProject(e) {
             e.preventDefault();
             const project = {
                 id: 'proj-' + Date.now(),
@@ -2010,7 +2010,7 @@
             document.querySelector('[data-view="projects"]').click();
         }
 
-        function saveTask(e) {
+        function saveNewTask(e) {
             e.preventDefault();
             const task = {
                 id: 'task-' + Date.now(),
@@ -2252,30 +2252,6 @@
         };
         
         // Save individual project
-        function saveProject(project) {
-            db.collection('projects').doc(project.id).set({
-                ...project,
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                updatedBy: currentLoggedUser
-            }).then(() => {
-                console.log(`✅ Project ${project.id} saved`);
-            }).catch(error => {
-                console.error(`❌ Error saving project:`, error);
-            });
-        }
-        
-        // Save individual task
-        function saveTask(task) {
-            db.collection('tasks').doc(task.id).set({
-                ...task,
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                updatedBy: currentLoggedUser
-            }).then(() => {
-                console.log(`✅ Task ${task.id} saved`);
-            }).catch(error => {
-                console.error(`❌ Error saving task:`, error);
-            });
-        }
         
         // Delete project from Firestore
         function deleteProjectFromFirestore(projectId) {
@@ -2430,5 +2406,3 @@
     </script>
 </body>
 </html>
-
-
