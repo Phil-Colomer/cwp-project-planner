@@ -40,15 +40,22 @@
             border-bottom: 1px solid #e0e0e0;
             background: linear-gradient(135deg, #FF6B35 0%, #FF4757 100%);
             color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .header h1 {
             font-size: 28px;
             font-weight: 700;
-            margin-bottom: 8px;
+            margin: 0;
             display: flex;
             align-items: center;
             gap: 12px;
+        }
+
+        #userMenuContainer {
+            position: relative;
         }
 
         .icon {
@@ -831,18 +838,42 @@
 
             /* Header */
             .header {
-                padding: 20px 16px;
+                padding: 16px;
+                flex-direction: row;
+                gap: 12px;
             }
 
             .header h1 {
-                font-size: 18px;
+                font-size: 16px;
+                flex: 1;
             }
 
-            .user-info {
-                position: static;
-                margin-top: 12px;
-                padding: 8px 12px;
-                font-size: 12px;
+            .header h1 .icon {
+                width: 28px;
+                height: 28px;
+                font-size: 16px;
+            }
+
+            /* User menu in header - mobile optimized */
+            #userMenuContainer {
+                flex-shrink: 0;
+            }
+
+            #userMenuButton {
+                padding: 6px !important;
+            }
+
+            #userMenuButton > div:nth-child(2) {
+                display: none !important; /* Hide username text on mobile */
+            }
+
+            #userMenuButton svg {
+                display: none !important; /* Hide arrow on mobile */
+            }
+
+            #userDropdown {
+                right: 0 !important;
+                min-width: 180px !important;
             }
 
             /* Tabs */
@@ -851,6 +882,12 @@
                 -webkit-overflow-scrolling: touch;
                 padding: 0 8px;
                 gap: 4px;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+            }
+
+            .tabs::-webkit-scrollbar {
+                display: none;
             }
 
             .tab {
@@ -858,6 +895,7 @@
                 font-size: 13px;
                 white-space: nowrap;
                 min-width: auto;
+                flex-shrink: 0;
             }
 
             /* Dashboard Cards */
@@ -868,6 +906,7 @@
 
             .dashboard-card {
                 padding: 16px;
+                min-height: 100px;
             }
 
             .card-value {
@@ -916,70 +955,86 @@
 
             .btn-group {
                 width: 100%;
-                flex-direction: column;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
                 gap: 8px;
             }
 
             .btn-group .btn {
                 width: 100%;
                 justify-content: center;
+                font-size: 11px;
+                padding: 10px 8px;
             }
 
-            /* Tables - Horizontal Scroll */
-            .table-container {
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                margin: 0 -12px;
-                padding: 0 12px;
-            }
-
-            table {
-                font-size: 12px;
-                min-width: 100%;
+            /* Tables - Complete rewrite for mobile */
+            .view > div > table,
+            #dashboardOverview table {
                 display: block;
                 overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
                 white-space: nowrap;
+                border: none;
             }
 
-            thead, tbody, tr {
+            table thead,
+            table tbody {
+                display: block;
+            }
+
+            table tr {
                 display: table;
                 width: 100%;
-                table-layout: fixed;
+                table-layout: auto;
             }
 
-            th, td {
-                padding: 12px 8px;
-                font-size: 12px;
+            table th,
+            table td {
+                display: table-cell;
+                padding: 10px 6px;
+                font-size: 11px;
+                white-space: normal;
+                word-wrap: break-word;
+                vertical-align: middle;
             }
 
-            th:first-child, td:first-child {
+            /* First column sticky */
+            table th:first-child,
+            table td:first-child {
                 position: sticky;
                 left: 0;
                 background: white;
-                z-index: 1;
+                z-index: 2;
+                min-width: 120px;
+                max-width: 120px;
+                box-shadow: 2px 0 4px rgba(0,0,0,0.05);
+            }
+
+            table thead th:first-child {
+                z-index: 3;
+            }
+
+            /* Make other columns visible with min-width */
+            table th,
+            table td {
+                min-width: 80px;
+            }
+
+            /* Action column */
+            table th:last-child,
+            table td:last-child {
                 min-width: 140px;
-            }
-
-            /* Make tables scrollable */
-            #dashboardOverview table,
-            .view table {
-                display: block;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-            }
-
-            #dashboardOverview thead,
-            #dashboardOverview tbody,
-            .view thead,
-            .view tbody {
-                display: table;
-                width: 100%;
+                position: sticky;
+                right: 0;
+                background: white;
+                z-index: 2;
+                box-shadow: -2px 0 4px rgba(0,0,0,0.05);
             }
 
             /* Buttons */
             .btn {
-                padding: 10px 16px;
-                font-size: 13px;
+                padding: 8px 10px;
+                font-size: 12px;
                 white-space: nowrap;
             }
 
@@ -990,13 +1045,15 @@
 
             /* Badges */
             .status-badge, .priority-badge {
-                font-size: 11px;
-                padding: 4px 8px;
+                font-size: 10px;
+                padding: 3px 6px;
+                white-space: nowrap;
             }
 
             /* Progress Bar */
             .progress-bar {
                 width: 60px !important;
+                min-width: 60px;
             }
 
             /* Modals */
@@ -1071,43 +1128,22 @@
                 font-size: 13px;
             }
 
-            /* Editable cells - Make them more touch-friendly */
+            /* Editable cells */
             .editable-cell {
-                min-height: 44px;
-                padding: 12px 8px;
+                min-height: 40px;
+                padding: 8px 6px;
+                font-size: 11px;
             }
 
             /* Tooltips - Hide on mobile */
             .tooltip {
-                display: none;
-            }
-
-            /* Dashboard Overview adjustments */
-            .dashboard-card {
-                min-height: 100px;
-            }
-
-            /* Project/Task Actions */
-            .clickable-row {
-                cursor: pointer;
-            }
-
-            /* Make action buttons larger for touch */
-            .clickable-row .btn {
-                min-width: 36px;
-                min-height: 36px;
-                padding: 8px;
+                display: none !important;
             }
 
             /* Hide some columns on very small screens */
             @media (max-width: 480px) {
                 .dashboard-grid {
                     grid-template-columns: 1fr;
-                }
-
-                th:nth-child(n+5), 
-                td:nth-child(n+5) {
-                    display: none;
                 }
             }
 
@@ -1116,7 +1152,7 @@
                 overflow-x: hidden;
             }
 
-            /* PPT Export Modal - Mobile friendly */
+            /* PPT Export Modal */
             .pptx-projects-grid {
                 grid-template-columns: 1fr !important;
             }
@@ -1127,12 +1163,6 @@
 
             textarea {
                 font-size: 14px;
-            }
-
-            /* User menu */
-            .user-info {
-                right: 16px;
-                top: 16px;
             }
         }
 
@@ -1154,6 +1184,12 @@
             .section-title {
                 font-size: 16px;
             }
+
+            table th:first-child,
+            table td:first-child {
+                min-width: 100px;
+                max-width: 100px;
+            }
         }
     </style>
 </head>
@@ -1163,6 +1199,7 @@
                 <span class="icon">🎯</span>
                 CWP Product Dev Team - Project Planner
             </h1>
+            <div id="userMenuContainer"></div>
         </div>
 
         <div class="tabs">
@@ -1573,26 +1610,52 @@
         }
         
         function showUserInfo(username) {
-            const userDisplay = document.createElement('div');
-            userDisplay.id = 'userDisplay';
-            userDisplay.style.cssText = `
-                position: fixed; top: 20px; right: 20px; background: white; padding: 12px 16px;
-                border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-                display: flex; align-items: center; gap: 12px; z-index: 1000;
+            const userMenuContainer = document.getElementById('userMenuContainer');
+            
+            userMenuContainer.innerHTML = `
+                <div id="userMenuButton" style="background: rgba(255,255,255,0.2); padding: 8px 12px; border-radius: 8px; display: flex; align-items: center; gap: 8px; cursor: pointer; backdrop-filter: blur(10px); transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">
+                    <div style="width: 32px; height: 32px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; color: #E91E63; font-weight: 600; font-size: 14px;">
+                        ${username.charAt(0).toUpperCase()}
+                    </div>
+                    <div style="font-size: 14px; font-weight: 600; color: white;">${username}</div>
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="transition: transform 0.2s;">
+                        <path d="M3 4.5L6 7.5L9 4.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div id="userDropdown" style="display: none; position: absolute; top: calc(100% + 8px); right: 0; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); min-width: 200px; overflow: hidden; z-index: 1000;">
+                    <div style="padding: 12px 16px; border-bottom: 1px solid #e0e0e0;">
+                        <div style="font-size: 14px; font-weight: 600; color: #2c3e50;">${username}</div>
+                        <div style="font-size: 12px; color: #6c757d; margin-top: 2px;">Sesión activa</div>
+                    </div>
+                    <button onclick="handleLogout()" style="width: 100%; padding: 12px 16px; background: white; border: none; text-align: left; font-size: 14px; cursor: pointer; color: #dc3545; transition: background 0.2s;" onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='white'">
+                        🚪 Cerrar sesión
+                    </button>
+                </div>
             `;
             
-            userDisplay.innerHTML = `
-                <div style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #E91E63 0%, #0065FF 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 14px;">
-                    ${username.charAt(0).toUpperCase()}
-                </div>
-                <div style="flex: 1;">
-                    <div style="font-size: 14px; font-weight: 600; color: #2c3e50;">${username}</div>
-                    <div style="font-size: 12px; color: #6c757d;">Sesión activa</div>
-                </div>
-                <button onclick="handleLogout()" style="padding: 6px 12px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 6px; font-size: 12px; cursor: pointer; color: #6c757d;">Salir</button>
-            `;
+            // Toggle dropdown
+            document.getElementById('userMenuButton').addEventListener('click', function(e) {
+                e.stopPropagation();
+                const dropdown = document.getElementById('userDropdown');
+                const isVisible = dropdown.style.display === 'block';
+                dropdown.style.display = isVisible ? 'none' : 'block';
+                
+                // Rotate arrow
+                const arrow = this.querySelector('svg');
+                arrow.style.transform = isVisible ? 'rotate(0deg)' : 'rotate(180deg)';
+            });
             
-            document.body.appendChild(userDisplay);
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                const dropdown = document.getElementById('userDropdown');
+                const menuButton = document.getElementById('userMenuButton');
+                const container = document.getElementById('userMenuContainer');
+                if (dropdown && container && !container.contains(e.target)) {
+                    dropdown.style.display = 'none';
+                    const arrow = menuButton?.querySelector('svg');
+                    if (arrow) arrow.style.transform = 'rotate(0deg)';
+                }
+            });
         }
         
         function handleLogout() {
@@ -3070,69 +3133,7 @@
                         }
                     }
                 });
-                
-                // Update localStorage backup
-                localStorage.setItem('projects', JSON.stringify(projects));
-            }, error => {
-                console.error('❌ Error in projects real-time sync:', error);
-            });
-            
-            // Listen to tasks collection
-            db.collection('tasks').onSnapshot(snapshot => {
-                snapshot.docChanges().forEach(change => {
-                    const taskData = change.doc.data();
-                    
-                    if (change.type === 'added' || change.type === 'modified') {
-                        if (taskData.updatedBy !== currentLoggedUser) {
-                            console.log(`📥 Task updated by ${taskData.updatedBy}: ${taskData.name}`);
-                            
-                            const index = tasks.findIndex(t => t.id === taskData.id);
-                            if (index >= 0) {
-                                tasks[index] = taskData;
-                            } else {
-                                tasks.push(taskData);
-                            }
-                            
-                            const activeTab = document.querySelector('.tab.active');
-                            if (activeTab && (activeTab.dataset.view === 'tasks' || activeTab.dataset.view === 'dashboard')) {
-                                renderView(activeTab.dataset.view);
-                            }
-                        }
-                    } else if (change.type === 'removed') {
-                        console.log(`🗑️ Task deleted: ${taskData.name}`);
-                        tasks = tasks.filter(t => t.id !== taskData.id);
-                        
-                        const activeTab = document.querySelector('.tab.active');
-                        if (activeTab && (activeTab.dataset.view === 'tasks' || activeTab.dataset.view === 'dashboard')) {
-                            renderView(activeTab.dataset.view);
-                        }
-                    }
-                });
-                
-                // Update localStorage backup
-                localStorage.setItem('tasks', JSON.stringify(tasks));
-            }, error => {
-                console.error('❌ Error in tasks real-time sync:', error);
-            });
-            
-            console.log('✅ Real-time sync active');
-        }
-        
-        console.log('🚀 CWP Project Planner ready!');
-        console.log('   📡 Real-time sync: ACTIVE (merge intelligence)');
-        console.log('   🔐 Authentication: ENABLED');
-        console.log('   👥 Multi-user: SAFE');
-        
-        if (checkAuth()) {
-            showUserInfo(currentLoggedUser);
-            initSampleData();
-            renderDashboard();
-            loadFromFirestore();
-            setupRealtimeSync();
-        }
-    </script>
-</body>
-</html>
+
 
 
 
